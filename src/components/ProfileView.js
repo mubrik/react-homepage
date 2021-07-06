@@ -33,6 +33,13 @@ const useStyles = makeStyles(theme => ({
         display: "flex",
         justifyContent: "space-evenly",
     },
+    projectBtnSection: {
+        margin: theme.spacing(0.5),
+        marginBottom: theme.spacing(5),
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "baseline",
+    },
     profileAvatar: {
         height: "150px",
         width: "150px"
@@ -45,6 +52,9 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center"
+    },
+    margin: {
+        margin: theme.spacing(0.5),
     }
 }));
 
@@ -80,7 +90,7 @@ const ProfileView = ({setnav, show, ...rest}) => {
             <animated.div className={classes.profileCard} style={styles} {...rest}>
                 <div className={classes.profileDiv}>
                     <Avatar 
-                    src="/android-chrome-512x512.png" 
+                    src={darkMode ? "react-homepage/avi2.png" : "react-homepage/avi.png"} 
                     alt="test"
                     className={classes.profileAvatar}
                     />
@@ -88,10 +98,11 @@ const ProfileView = ({setnav, show, ...rest}) => {
                 <div className={classes.aboutSection}>
                     <CustomType>My name is Mubarak Yahaya, I'm a programmer based in Nigeria.</CustomType>
                     <CustomType>I'm Passionate about web/software development and my current working stack is Python and Javascript</CustomType>
-                    <CustomType>Check out some of my projects</CustomType>
                 </div>
-                <div className={classes.profileDiv}>
-                    <CustomButton 
+                <div className={classes.projectBtnSection}>
+                    <CustomType className={classes.margin}>Check out some of my</CustomType>
+                    <CustomButton
+                        className={classes.margin}
                         onClick={handleClick}
                     >
                         Projects

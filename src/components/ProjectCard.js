@@ -1,8 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import {CustomLinkButton} from './CustomComponents';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -11,27 +12,39 @@ const useStyles = makeStyles((theme) => ({
         width: "100%"
     },
     media: {
-      height: 140,
+        maxHeight: 320,
+        minWidth: 120,
+        maxWidth: 200,
+        [theme.breakpoints.up("xs")]: {
+            maxHeight: 320,
+            maxWidth: 400,
+            minWidth: 200,
+        },
+        [theme.breakpoints.up("md")]: {
+            maxHeight: 320,
+            maxWidth: 400,
+            minWidth: 320,
+        },
     },
     cardBodyArea: {
         display: "flex",
         flexDirection: "column"
     },
-    cardTitleArea: {
-
-    },
     cardDetailsArea: {
         display: "grid",
         gridTemplateRows: "auto",
         padding: theme.spacing(0.4),
-        [theme.breakpoints.up("xs")]: {
+        justifyItems: "center",
+        [theme.breakpoints.up("md")]: {
             gridTemplateColumns: "auto auto",
         },
     }, 
     cardTextArea : {
         padding: theme.spacing(0.4),
+        margin: theme.spacing(0.2),
         display: "flex",
-        flexDirection: "column"
+        flexDirection: "column",
+        textAlign: "center"
     },
     cardButtonArea : {
         padding: theme.spacing(0.4),
@@ -52,11 +65,17 @@ const ProjectCard = ({imageUri, content, siteLink, codeLink}) => {
     return(
         <Paper elevation={0} className={classes.root}>
             <div className={classes.cardDetailsArea}>
-                <img
-                    /* className={classes.media} */
-                    alt={"ff"}
-                    src={imageUri ? imageUri : ""}
-                />
+                {imageUri ? (
+                    <img
+                        className={classes.media}
+                        alt={"ff"}
+                        src={imageUri}
+                    />
+                    ) : (
+                        <Skeleton className={classes.media} height={30} animation="wave"/>
+                    )
+                }
+                
                 <div className={classes.cardTextArea}>
                     <div>
                         <Typography variant="body2" color="textSecondary" component="p">

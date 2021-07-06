@@ -33,7 +33,7 @@ const Homepage = () => {
         <div className={classes.root}>
             <NavButton setnav={setPageState}/>
             <DarkModeSwitch/>
-            <div>
+            
                 <ProfileView 
                     setnav={setPageState}
                     show={!!(pageState === "home")}
@@ -42,7 +42,7 @@ const Homepage = () => {
                     setnav={setPageState}
                     show={!!(pageState === "projects")}
                 />
-            </div>
+            
         </div>
         </>
     );
