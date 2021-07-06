@@ -90,7 +90,7 @@ const ProfileView = ({setnav, show, ...rest}) => {
             <animated.div className={classes.profileCard} style={styles} {...rest}>
                 <div className={classes.profileDiv}>
                     <Avatar 
-                    src={darkMode ? "/avi2.png" : "/avi.png"} 
+                    src={darkMode ? "/react-homepage/avi2.png" : "/react-homepage/avi.png"} 
                     alt="test"
                     className={classes.profileAvatar}
                     />

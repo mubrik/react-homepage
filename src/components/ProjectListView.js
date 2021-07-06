@@ -85,7 +85,7 @@ const ProjectListView = ({setnav, show, ...rest}) => {
     const [projData, setProjData] = React.useState(null);
     // fetch project details
     React.useEffect(() => {
-        fetch('/projectDetails.json')
+        fetch('/react-homepage/projectDetails.json')
             .then(res => res.json())
             .then(result => {
                 const {details} = result;
