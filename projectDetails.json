@@ -13,7 +13,7 @@
             "content": "My first project, Built with a Django backend serving static templates, Basic app for note/code taking.",
             "siteLink": "https://noted.mubrik.com",
             "codeLink": "https://github.com/mubrik/alphanote",
-            "imageUri": "/react-homepage/pro.gif"
+            "imageUri": "/home/pro.gif"
         },
         {
             "header":"Carded Project",
@@ -21,7 +21,7 @@
             "content": "Django backend with Rest frameworks, Using React for front end and redux for state management.",
             "siteLink": "https://carded.mubrik.com",
             "codeLink": "https://github.com/mubrik/carded-djangorest/tree/frontend",
-            "imageUri": "/react-homepage/proj2.gif"
+            "imageUri": "/home/proj2.gif"
         },
         {
             "header":"Binance API Project",
