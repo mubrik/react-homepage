@@ -22,6 +22,13 @@
             "siteLink": "https://carded.mubrik.com",
             "codeLink": "https://github.com/mubrik/carded-djangorest/tree/frontend",
             "imageUri": "/react-homepage/proj2.gif"
+        },
+        {
+            "header":"Binance API Project",
+            "description": "Coin-Pair Request Server",
+            "content": "Django backend, using JSON as I/O, Official binance Python API, Server can be hosted and usde to fetch pair prices, candle sticks and more",
+            "codeLink": "https://github.com/mubrik/djangobinance-api",
+            "imageUri": ""
         }
     ]
 }

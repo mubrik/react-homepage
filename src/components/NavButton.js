@@ -52,28 +52,50 @@ const NavButton = ({setnav}) => {
         }
     };
 
+    const menuProps = {
+        anchorEl,
+        open,
+        onClose: handleClose,
+        id: "faded-menu",
+        TransitionComponent: CustomFade
+    }
+
     return (
         <>
         <IconButton 
-            aria-controls="fade-menu" 
+            aria-controls="fade-menu"
             aria-haspopup="true" 
             className={classes.NavButton}
             onClick={(e) => handleClick(e)}
         >
             <MenuIcon color={darkMode ? "primary" : "secondary"} />
         </IconButton>
-        <Menu
+        <CustomMenu
+            keepMounted
+            {...menuProps}
+        >
+            <CustomMenuItem onClick={() => handleClose("home")}> home </CustomMenuItem>
+            <CustomMenuItem onClick={() => handleClose("projects")}> projects </CustomMenuItem>
+        </CustomMenu>
+        {/* <Menu
             id="fade-menu"
             open={open}
             anchorEl={anchorEl}
             onClose={handleClose}
-            TransitionComponent={Fade}
+            TransitionComponent={CustomFade}
         >
             <MenuItem onClick={() => handleClose("home")}>Home</MenuItem>
             <MenuItem onClick={() => handleClose("projects")}>Projects</MenuItem>
-        </Menu>
+        </Menu> */}
         </>
     );
 };
+
+
+const CustomFade = React.forwardRef((props, ref) => (<Fade {...props} ref={ref} />));
+
+const CustomMenu = React.forwardRef((props, ref) => (<Menu {...props} ref={ref}/>))
+
+const CustomMenuItem = React.forwardRef((props, ref) => (<MenuItem {...props} ref={ref}/>))
 
 export default NavButton;

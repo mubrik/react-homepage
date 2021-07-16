@@ -13,8 +13,8 @@ const useStyles = makeStyles(theme => ({
         height: "auto",
         padding: theme.spacing(2),
         border: theme.darkMode.darkMode ? `1px solid ${theme.palette.primary.light}21` : "none",
-        boxShadow: theme.darkMode.darkMode ? "none" : `-1px -3px 10px 1px ${theme.palette.secondary.light}21,
-        1px 3px 10px 1px ${theme.palette.secondary.light}21`,
+        boxShadow: theme.darkMode.darkMode ? "none" : `7px 10px 14px 1px #0000000d,
+        1px 3px 10px 1px #00000021`,
         borderRadius: "0.9em",
         minWidth:"100%", // mobile
         [theme.breakpoints.up("xs")]: {
@@ -97,7 +97,7 @@ const ProfileView = ({setnav, show, ...rest}) => {
                 </div>
                 <div className={classes.aboutSection}>
                     <CustomType>My name is Mubarak Yahaya, I'm a programmer based in Nigeria.</CustomType>
-                    <CustomType>I'm Passionate about web/software development and my current working stack is Python and Javascript</CustomType>
+                    <CustomType>I'm Passionate about web/software development and my current working stack is Python, Javascript and Linux</CustomType>
                 </div>
                 <div className={classes.projectBtnSection}>
                     <CustomType className={classes.margin}>Check out some of my</CustomType>
