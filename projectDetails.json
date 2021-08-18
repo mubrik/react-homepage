@@ -29,6 +29,14 @@
             "content": "Django backend, using JSON as I/O, Official binance Python API, Server can be hosted and used to fetch pair prices, candle sticks and more",
             "codeLink": "https://github.com/mubrik/djangobinance-api",
             "imageUri": ""
+        },
+        {
+            "header":"Chrome LastFm Extension",
+            "description": "An extension for google chrome",
+            "content": "A chrome extenson that updates scrobbles music from youtube music player to the lastfm tracking service",
+            "codeLink": "https://github.com/mubrik/simple-chrome-extension",
+            "imageUri": ""
         }
+
     ]
 }
