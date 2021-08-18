@@ -90,14 +90,15 @@ const ProfileView = ({setnav, show, ...rest}) => {
             <animated.div className={classes.profileCard} style={styles} {...rest}>
                 <div className={classes.profileDiv}>
                     <Avatar 
-                    src={darkMode ? "/home/avi2.png" : "/home/avi.png"} 
+                    src={darkMode ? "/react-homepage/avi2.png" : "/react-homepage/avi.png"} 
                     alt="test"
                     className={classes.profileAvatar}
                     />
                 </div>
                 <div className={classes.aboutSection}>
                     <CustomType>My name is Mubarak Yahaya, I'm a programmer based in Nigeria.</CustomType>
-                    <CustomType>I'm Passionate about web/software development and my current working stack is Python, Javascript and Linux</CustomType>
+                    <CustomType>I am Passionate about web/software development and love to tweak any and everything :)</CustomType>
+                    <CustomType>My current development stack includes Python, Javascript and Linux</CustomType>
                 </div>
                 <div className={classes.projectBtnSection}>
                     <CustomType className={classes.margin}>Check out some of my</CustomType>

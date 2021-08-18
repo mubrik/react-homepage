@@ -74,8 +74,8 @@ const NavButton = ({setnav}) => {
             keepMounted
             {...menuProps}
         >
-            <CustomMenuItem onClick={() => handleClose("home")}> home </CustomMenuItem>
-            <CustomMenuItem onClick={() => handleClose("projects")}> projects </CustomMenuItem>
+            <CustomMenuItem onClick={() => handleClose("home")}> Home </CustomMenuItem>
+            <CustomMenuItem onClick={() => handleClose("projects")}> Projects </CustomMenuItem>
         </CustomMenu>
         {/* <Menu
             id="fade-menu"

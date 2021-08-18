@@ -20,8 +20,8 @@ const useStyles = makeStyles(theme => ({
         minWidth:"100%", // mobile
         padding: theme.spacing(2),
         border: theme.darkMode.darkMode ? `1px solid ${theme.palette.primary.light}21` : "none",
-        boxShadow: theme.darkMode.darkMode ? "none" : `-1px -3px 10px 1px ${theme.palette.secondary.light}21,
-        1px 3px 10px 1px ${theme.palette.secondary.light}21`,
+        boxShadow: theme.darkMode.darkMode ? "none" : `7px 10px 14px 1px #0000000d,
+        1px 3px 10px 1px #00000021`,
         borderRadius: "0.9em",
         [theme.breakpoints.up("xs")]: {
             minWidth:"55%"
@@ -85,7 +85,7 @@ const ProjectListView = ({setnav, show, ...rest}) => {
     const [projData, setProjData] = React.useState(null);
     // fetch project details
     React.useEffect(() => {
-        fetch('/home/projectDetails.json')
+        fetch('/react-homepage/projectDetails.json')
             .then(res => res.json())
             .then(result => {
                 const {details} = result;

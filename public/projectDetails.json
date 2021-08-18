@@ -13,7 +13,7 @@
             "content": "My first project, Built with a Django backend serving static templates, Basic app for note/code taking.",
             "siteLink": "https://noted.mubrik.com",
             "codeLink": "https://github.com/mubrik/alphanote",
-            "imageUri": "/home/pro.gif"
+            "imageUri": "/react-homepage/pro.gif"
         },
         {
             "header":"Carded Project",
@@ -21,14 +21,22 @@
             "content": "Django backend with Rest frameworks, Using React for front end and redux for state management.",
             "siteLink": "https://carded.mubrik.com",
             "codeLink": "https://github.com/mubrik/carded-djangorest/tree/frontend",
-            "imageUri": "/home/proj2.gif"
+            "imageUri": "/react-homepage/proj2.gif"
         },
         {
             "header":"Binance API Project",
             "description": "Coin-Pair Request Server",
-            "content": "Django backend, using JSON as I/O, Official binance Python API, Server can be hosted and usde to fetch pair prices, candle sticks and more",
+            "content": "Django backend, using JSON as I/O, Official binance Python API, Server can be hosted and used to fetch pair prices, candle sticks and more",
             "codeLink": "https://github.com/mubrik/djangobinance-api",
             "imageUri": ""
+        },
+        {
+            "header":"Chrome LastFm Extension",
+            "description": "An extension for google chrome",
+            "content": "A chrome extenson that updates scrobbles music from youtube music player to the lastfm tracking service",
+            "codeLink": "https://github.com/mubrik/simple-chrome-extension",
+            "imageUri": ""
         }
+
     ]
 }
