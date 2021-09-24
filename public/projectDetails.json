@@ -34,6 +34,7 @@
             "header":"Chrome LastFm Extension",
             "description": "An extension for google chrome",
             "content": "A chrome extenson that updates scrobbles music from youtube music player to the lastfm tracking service",
+            "siteLink": "https://chrome.google.com/webstore/detail/chrome-youtube-music-last/lialnofdeccppcbgnlkfpnokgaelapco",
             "codeLink": "https://github.com/mubrik/simple-chrome-extension",
             "imageUri": ""
         },
@@ -41,7 +42,6 @@
             "header":"MS Sharepoint Time-sheet Webpart",
             "description": "A webaprt created for use on MS Sharepoint online",
             "content": "App is used to log different projects/tasks carried out by agents in a timeperiod for the organization",
-            "siteLink": "https://chrome.google.com/webstore/detail/chrome-youtube-music-last/lialnofdeccppcbgnlkfpnokgaelapco",
             "codeLink": "https://github.com/mubrik/sharepoint-WB-timesheet",
             "imageUri": "/react-homepage/webpartTS.gif"
         }
