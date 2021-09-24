@@ -9,7 +9,7 @@
         },
         {
             "header":"Noted Project",
-            "description": "Basic note taking app",
+            "description": "Basic note taking app (deprecated)",
             "content": "My first project, Built with a Django backend serving static templates, Basic app for note/code taking.",
             "siteLink": "https://noted.mubrik.com",
             "codeLink": "https://github.com/mubrik/alphanote",
@@ -36,6 +36,13 @@
             "content": "A chrome extenson that updates scrobbles music from youtube music player to the lastfm tracking service",
             "codeLink": "https://github.com/mubrik/simple-chrome-extension",
             "imageUri": ""
+        },
+        {
+            "header":"MS Sharepoint Time-sheet Webpart",
+            "description": "A webaprt created for use on MS Sharepoint online",
+            "content": "App is used to log different projects/tasks carried out by agents in a timeperiod for the organization",
+            "codeLink": "https://github.com/mubrik/sharepoint-WB-timesheet",
+            "imageUri": "/react-homepage/webpartTS.gif"
         }
 
     ]
