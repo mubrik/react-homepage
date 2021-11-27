@@ -1,6 +1,6 @@
 import * as React from 'react';
 // styles
-import { makeStyles } from "@material-ui/core/styles";
+import { styled } from '@mui/system';
 // components
 import NavButton from "./NavButton";
 import DarkModeSwitch from './DarkModeSwitch';
@@ -8,34 +8,32 @@ import ProjectListView from './ProjectListView';
 import ProfileView from './ProfileView';
 import NowPlaying from './NowPlaying';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    position: "relative",
-    minHeight: "100vh",
-    background: `linear-gradient(
-      180deg,
-      ${theme.palette.background.default} 65%,
-      ${theme.palette.type === "dark" ? theme.palette.primary.main : theme.palette.secondary.main}6e 300%)`,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: theme.spacing(0.8)
-  },
+// material styled
+const StyledRootDiv = styled("div")(({theme}) => ({
+  display: "flex",
+  flexDirection: "column",
+  position: "relative",
+  minHeight: "100vh",
+  background: `linear-gradient(
+    180deg,
+    ${theme.palette.background.default} 65%,
+    ${theme.palette.type === "dark" ? theme.palette.primary.main : theme.palette.secondary.main}6e 300%)`,
+  alignItems: "center",
+  justifyContent: "center",
+  padding: theme.spacing(0.8)
 }));
 
+// page state enum
 export type IHomePageState = "home" | "projects" | "nowPlaying";
 
 const Homepage = (): JSX.Element => {
 
-  // material styles
-  const classes = useStyles();
   // page state
   const [pageState, setPageState] = React.useState<IHomePageState>("home");
 
   return(
     <>
-    <div className={classes.root}>
+    <StyledRootDiv>
       <NavButton setNav={setPageState}/>
       <DarkModeSwitch/>
       {
@@ -60,7 +58,7 @@ const Homepage = (): JSX.Element => {
           show={!!(pageState === "nowPlaying")}
         />
       }
-    </div>
+    </StyledRootDiv>
     </>
   );
 };

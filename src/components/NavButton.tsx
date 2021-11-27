@@ -1,25 +1,23 @@
 import * as React from 'react';
-import {IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import { makeStyles } from "@material-ui/core/styles";
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Fade from '@material-ui/core/Fade';
+// material
+import { styled } from '@mui/system';
+import { Menu, MenuItem, Fade, IconButton } from '@mui/material';
+import { MenuOutlined } from '@mui/icons-material';
 // drkmode
 import { useDarkMode } from '../App';
 // types
 import {IHomePageState} from "./HomePage";
 
-const useStyles = makeStyles(theme => ({
-  NavButton: {
-    position: "absolute",
-    border: `1px solid ${theme.palette.type == "dark" ? theme.palette.primary.main : theme.palette.secondary.main}`,
-    left: "20px",
-    top: "15px",
-    [theme.breakpoints.up("sm")]: {
-      left: "50px",
-      top: "50px"
-    },
+// styled
+const StyledDiv = styled("div")(({theme}) => ({
+  position: "absolute",
+  border: `1px solid ${theme.palette.type == "dark" ? theme.palette.secondary.main : theme.palette.primary.main}`,
+  borderRadius: "15px",
+  left: "20px",
+  top: "15px",
+  [theme.breakpoints.up("sm")]: {
+    left: "50px",
+    top: "50px"
   },
 }));
 
@@ -28,8 +26,6 @@ interface INavProps {
 }
 
 const NavButton = ({setNav}:INavProps): JSX.Element => {
-  // material 
-  const classes = useStyles();
   // darkmode
   const {darkMode} = useDarkMode();
   // states
@@ -64,23 +60,15 @@ const NavButton = ({setNav}:INavProps): JSX.Element => {
     }
   };
 
-  // const menuProps = {
-  //   anchorEl,
-  //   open,
-  //   onClose: handleClose,
-  //   id: "faded-menu",
-  //   TransitionComponent: Fade
-  // };
-
   return (
-    <>
+    <StyledDiv>
     <IconButton 
       aria-controls="fade-menu"
       aria-haspopup="true" 
-      className={classes.NavButton}
+      color={darkMode ? "secondary" : "primary"}
       onClick={(e) => handleMenuClick(e)}
     >
-      <MenuIcon color={darkMode ? "primary" : "secondary"} />
+      <MenuOutlined/>
     </IconButton>
     <Menu
       open={menuShow}
@@ -93,7 +81,7 @@ const NavButton = ({setNav}:INavProps): JSX.Element => {
       <MenuItem onClick={() => handleMenuItemClick("projects")}> Projects </MenuItem>
       <MenuItem onClick={() => handleMenuItemClick("nowPlaying")}> Now Playing </MenuItem>
     </Menu>
-    </>
+    </StyledDiv>
   );
 };
 

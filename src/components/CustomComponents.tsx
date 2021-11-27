@@ -1,6 +1,6 @@
 import * as React from 'react';
 // ui
-import {Typography, Button, TypographyProps, ButtonProps } from '@material-ui/core';
+import { Button, Typography, ButtonProps, TypographyProps } from '@mui/material';
 // comps
 import {useDarkMode} from "../App";
 
@@ -9,8 +9,8 @@ const CustomType = ({children, ...rest}: TypographyProps): JSX.Element=> {
   const {darkMode} = useDarkMode();
 
   return (
-    <Typography 
-      color={darkMode ? "textPrimary" : "textSecondary"}
+    <Typography
+      sx={{color: darkMode ? "text.primary" : "text.secondary"}}
       {...rest}
     >
       {children}
@@ -18,24 +18,7 @@ const CustomType = ({children, ...rest}: TypographyProps): JSX.Element=> {
   );
 };
 
-const CustomButton = ({children, ...rest}: ButtonProps):JSX.Element => {
-
-  // darkmode
-  const {darkMode} = useDarkMode();
-
-  return(
-    <Button 
-      color={darkMode ? "primary" : "secondary"}
-      variant={'contained'}
-      {...rest}
-    >
-      {children}
-    </Button>
-  );
-
-};
-
-const CustomLinkButton = ({children, href,  ...rest}: ButtonProps):JSX.Element => {
+const CustomBaseButton = ({children, href, variant, onClick,  ...rest}: ButtonProps):JSX.Element => {
 
   // darkmode
   const {darkMode} = useDarkMode();
@@ -49,10 +32,10 @@ const CustomLinkButton = ({children, href,  ...rest}: ButtonProps):JSX.Element =
 
   return(
     <Button 
-      color={darkMode ? "primary" : "secondary"}
-      variant={'outlined'}
-      href={href}
-      onClick={(e) => handleLink(href, e)}
+      color={darkMode ? "secondary" : "primary"}
+      variant={variant ? variant : "outlined"}
+      onClick={onClick ? onClick : (e) => handleLink(href, e)}
+      href={href ? href : ""}
       {...rest}
     >
       {children}
@@ -60,4 +43,4 @@ const CustomLinkButton = ({children, href,  ...rest}: ButtonProps):JSX.Element =
   );
 };
 
-export {CustomType, CustomButton, CustomLinkButton};
+export {CustomType, CustomBaseButton};

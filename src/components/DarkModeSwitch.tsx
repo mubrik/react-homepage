@@ -1,42 +1,36 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { IconButton } from '@material-ui/core';
-import EmojiObjectsOutlinedIcon from '@material-ui/icons/EmojiObjectsOutlined';
+// material
+import { styled } from '@mui/system';
+import { IconButton } from '@mui/material';
 // dk mode context
 import {useDarkMode} from "../App";
+// icons
+import { EmojiObjectsOutlined } from '@mui/icons-material';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: "relative",
-    color:theme.palette.type === "dark" ? theme.palette.primary.main : theme.palette.secondary.main,
+const StyledDiv = styled("div")(({theme}) => ({
+  margin: 0,
+  position: "absolute",
+  right: "20px",
+  top: "12px",
+  [theme.breakpoints.up("sm")]: {
+    right: "50px",
+    top: "50px"
   },
-  iconPosition: {
-    margin: 0,
-    position: "absolute",
-    right: "20px",
-    top: "12px",
-    [theme.breakpoints.up("sm")]: {
-        right: "50px",
-        top: "50px"
-    },
-  }
 }));
 
 const DarkModeSwitch = (): JSX.Element => {
-  // styles
-  const classes = useStyles();
   // darkmode
-  const {setDarkMode} = useDarkMode();
+  const {darkMode, setDarkMode} = useDarkMode();
 
   return(
-    <div className={classes.iconPosition}>
+    <StyledDiv>
       <IconButton
-        className={classes.root}
+        color={darkMode ? "secondary" : "primary"}
         onClick={() => setDarkMode(state => !state)}
       >
-        <EmojiObjectsOutlinedIcon fontSize={"large"}/>
+        <EmojiObjectsOutlined fontSize={"large"}/>
       </IconButton>
-    </div>
+    </StyledDiv>
   );
 };
 

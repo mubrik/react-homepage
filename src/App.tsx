@@ -1,19 +1,35 @@
 import * as React from 'react';
 import Homepage from "./components/HomePage";
-import { ThemeProvider  } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+// import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
 // utils
 import createContext from "./components/utils/contextUtil";
 
 // darkmode context
-// interface
+// interface for darkmode context
 interface IDarkModeContext {
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
-export const DarkModeContext = React.createContext<IDarkModeContext | null>(null);
+// the context, created using custom create contex
+// custom includes error checking so TS doesnt flag an issue
 export const [useDarkMode, DarkModeProvider] = createContext<IDarkModeContext>();
+
+// module augmentation
+// first time using this in TS, cool stuff
+declare module '@mui/material/styles' {
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    type?: string;
+    warning?: PaletteColorOptions
+  }
+  interface PaletteColorOptions {
+    light?: string;
+    main: string;
+    dark?: string;
+  }
+}
 
 const App = ():JSX.Element => {
   // get darkmode preference
@@ -30,9 +46,10 @@ const App = ():JSX.Element => {
   // theme memoised
   const theme = React.useMemo(
     () =>
-      createMuiTheme({
+      createTheme({
         palette: {
           type: darkMode ? "dark" : "light",
+          mode: darkMode ? "dark" : "light",
           primary: {
             light: "#6ec6ff",
             main: "#2196f3",
@@ -66,12 +83,18 @@ const App = ():JSX.Element => {
       }),
     [darkMode],
   );
+
   // responsive theme
   const responsiveTheme = responsiveFontSizes(theme, {factor:3});
+
   // effect for setting dark mode
   React.useEffect(() => {
     setDarkMode(prefersDarkMode);
   }, [prefersDarkMode]);
+  // basic effect for testing stuff
+  // React.useEffect(() => {
+  //   console.log(theme);
+  // });
 
 
   return(

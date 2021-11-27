@@ -1,42 +1,42 @@
 import * as React from "react";
 // material
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { styled } from "@mui/system";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+// icon
+import { Stack } from "@mui/material";
+import RefreshIcon from '@mui/icons-material/Refresh';
 // transitions
 import { animated, useTransition } from 'react-spring';
 // types
 import {IHomePageState} from "./HomePage";
-// icon
-import RefreshIcon from '@mui/icons-material/Refresh';
-import { Stack } from "@mui/material";
 // drkmode
 import { useDarkMode } from "../App";
+// custom
+import { CustomType } from "./CustomComponents";
 
-const useStyles = makeStyles(theme => ({
-  profileCard: {
-    display: "none",
-    position: "relative",
-    flexDirection: "column",
-    height: "auto",
-    padding: theme.spacing(2),
-    border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
-    boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
-    1px 3px 10px 1px #00000021`,
-    borderRadius: "0.9em",
-    minWidth:"100%", // mobile
-    [theme.breakpoints.up("xs")]: {
-        minWidth:"40%"
-    },
-    [theme.breakpoints.up("sm")]: {
-        minWidth:"50%"
-    },
-    [theme.breakpoints.up("xl")]: {
-        minWidth:"60%"
-    },
+const StyledProfileCardDiv = styled("div")(({theme}) => ({
+  position: "relative",
+  flexDirection: "column",
+  height: "auto",
+  maxHeight: "80vh",
+  padding: theme.spacing(2),
+  border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
+  boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
+  1px 3px 10px 1px #00000021`,
+  borderRadius: "0.9em",
+  minWidth:"100%", // mobile
+  [theme.breakpoints.up("xs")]: {
+      minWidth:"50vw"
+  },
+  [theme.breakpoints.up("sm")]: {
+      minWidth:"55vw"
+  },
+  [theme.breakpoints.up("xl")]: {
+      minWidth:"58vw"
   },
 }));
 
@@ -78,7 +78,6 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
 
   // darkmode 
   const {darkMode} = useDarkMode();
-  const theme = useTheme();
 
   // use callback
   const fetchMyTracks = React.useCallback( async () => {
@@ -90,7 +89,6 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
         `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=mubrik&api_key=ae2c676a4406b4a3afdbe1f31413b72c&format=json&limit=5`
       );
       const result = await response.json();
-      console.log(result);
   
       const reqObj: ITrackObj[] = [...result["recenttracks"]["track"]];
       const _nowPlaying = prepareData(reqObj.slice(0, 1)[0], "nowPlaying");
@@ -114,9 +112,6 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
       fetchMyTracks();
     }
   }, [pageState, dataState]);
-
-  // material
-  const classes = useStyles();
 
   // anim transitions props
   const transitions = useTransition(show, {
@@ -169,7 +164,7 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
       const _playtime = newData?.date?.uts ? newData.date.uts : null;
 
       if (_playtime) {
-        console.log(_playtime);
+        // work on later
         const currTime = new Date();
       }
 
@@ -180,8 +175,9 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
  
   return transitions(
     (styles, show) => show &&
-    <animated.div style={styles} className={classes.profileCard}>
-      <Stack sx={{ gap: 1 }}>
+    <animated.div style={styles}>
+    <StyledProfileCardDiv>
+      <Stack sx={{ gap: 1, height: "100%", position:"relative" }}>
         <Stack direction={"row"} justifyContent={"flex-end"}>
           <RefreshIcon
             aria-label={"refresh"}
@@ -199,26 +195,30 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
         >
           <Stack>
             { nowPlaying !== null &&
-            <Card sx={{ display: 'flex', justifyContent: "center", height: "100%" }}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: "center" }}>
-                  <Typography 
-                    component="div"
-                    variant="h4"
-                    color={darkMode ? "text.primary" : "text.secondary"}
-                  >
-                    Now Playing
-                  </Typography>
+            <Card sx={{ display: 'flex', justifyContent: "center" }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: "center", gap: 2 }}>
+                <Typography 
+                  component="div"
+                  variant="h4"
+                  color={darkMode ? "text.primary" : "text.secondary"}
+                >
+                  Now Playing
+                </Typography>
                 <CardMedia
                   component="img"
                   image={
                     nowPlaying.image === "" ?
                     // load a placeholder
+                    darkMode ? "https://media.giphy.com/media/jx8f8LrkhIOyAy6gcM/giphy.gif" :
                     "https://media.giphy.com/media/l46Ci4XuSbWL249fq/giphy.gif" :
                     nowPlaying.image
                   }
+                  sx={{
+                    maxHeight: "500px"
+                  }}
                   alt="Live from space album cover"
                 />
-                <CardContent sx={{ flex: '1 0 auto' }}>
+                <CardContent sx={{ flex: '1 1 auto' }}>
                   <Typography 
                     component="div"
                     variant="h5"
@@ -245,11 +245,11 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
             </Card>
             }
           </Stack>
-          <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 2}}>
             {
               recentPlays &&
               recentPlays.map((track, index) => (
-                <Card sx={{ display: 'flex' }} key={index}>
+                <Card sx={{ display: 'flex', height: "22%" }} key={index}>
                   <CardContent sx={{ flex: '1 0 auto' }}>
                     <Typography 
                       component="div"
@@ -279,14 +279,14 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
           </Stack>
         </Stack>
         <Stack direction={"row"} justifyContent={"flex-end"}>
-          <Typography 
+          <CustomType 
             variant="subtitle1"
-            component="div"
           >
             Powered by LastFm
-          </Typography>
+          </CustomType>
         </Stack>
       </Stack>
+    </StyledProfileCardDiv>
     </animated.div>
   );
 };

@@ -1,64 +1,70 @@
 import * as React from 'react';
-import { Avatar } from '@material-ui/core';
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+// material
+import { styled } from '@mui/system';
+import { Avatar } from '@mui/material';
+// animation
 import { animated, useTransition } from 'react-spring';
+// social icons
 import { SocialIcon } from 'react-social-icons';
-import {CustomType, CustomButton} from './CustomComponents';
+// custom
+import {CustomType, CustomBaseButton} from './CustomComponents';
 // dkmode
 import { useDarkMode } from '../App';
 //types
 import {IHomePageState} from "./HomePage";
 
-const useStyles = makeStyles(theme => ({
-  profileCard: {
-    display: "none",
-    position: "relative",
-    flexDirection: "column",
-    height: "auto",
-    padding: theme.spacing(2),
-    border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
-    boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
-    1px 3px 10px 1px #00000021`,
-    borderRadius: "0.9em",
-    minWidth:"100%", // mobile
-    [theme.breakpoints.up("xs")]: {
-        minWidth:"40%"
-    },
-    [theme.breakpoints.up("sm")]: {
-        minWidth:"50%"
-    },
-    [theme.breakpoints.up("xl")]: {
-        minWidth:"60%"
-    },
+const StyledAboutDiv = styled("div")(({theme}) => ({
+  margin: theme.spacing(0.5),
+  marginBottom: theme.spacing(2),
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center"
+}));
+
+const StyledParagraphDiv = styled("div")(({theme}) => ({
+  margin: theme.spacing(0.1),
+  marginBottom: theme.spacing(1.5),
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center"
+}));
+
+const StyledBtnSectionDiv = styled("div")(({theme}) => ({
+  margin: theme.spacing(3),
+  display: "flex",
+  justifyContent: "space-evenly",
+}));
+
+const StyledProfileAviDiv = styled("div")(({theme}) => ({
+  margin: theme.spacing(0.5),
+  marginBottom: theme.spacing(3),
+  display: "flex",
+  justifyContent: "space-evenly",
+}));
+
+const StyledProfileCardDiv = styled("div")(({theme}) => ({
+  position: "relative",
+  flexDirection: "column",
+  height: "auto",
+  padding: theme.spacing(2),
+  border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
+  boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
+  1px 3px 10px 1px #00000021`,
+  borderRadius: "0.9em",
+  minWidth:"100%", // mobile
+  [theme.breakpoints.up("xs")]: {
+      minWidth:"50vw"
   },
-  profileDiv: {
-    margin: theme.spacing(0.5),
-    marginBottom: theme.spacing(5),
-    display: "flex",
-    justifyContent: "space-evenly",
+  [theme.breakpoints.up("sm")]: {
+      minWidth:"55vw"
   },
-  projectBtnSection: {
-    margin: theme.spacing(0.5),
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "baseline",
+  [theme.breakpoints.up("xl")]: {
+      minWidth:"58vw"
   },
-  profileAvatar: {
-    height: "150px",
-    width: "150px"
-  },
-  aboutSection: {
-    margin: theme.spacing(0.5),
-    marginBottom: theme.spacing(4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "center"
-  },
-  margin: {
-    margin: theme.spacing(0.5),
-  }
 }));
 
 interface IProfileViewProps {
@@ -68,8 +74,8 @@ interface IProfileViewProps {
 
 const ProfileView = ({setNav, show}: IProfileViewProps): JSX.Element => {
   // material styles
-  const classes = useStyles();
-  const theme = useTheme();
+  // const theme = useTheme();
+
   // anim transitions props
   const transitions = useTransition(show, {
       from: {
@@ -95,46 +101,49 @@ const ProfileView = ({setNav, show}: IProfileViewProps): JSX.Element => {
 
   return transitions(
     (styles, show) => show &&
-    <animated.div className={classes.profileCard} style={styles}>
-      <div className={classes.profileDiv}>
+    <animated.div style={styles}>
+    <StyledProfileCardDiv>
+      <StyledProfileAviDiv>
         <Avatar 
-        src={darkMode ? "/react-homepage/avi2.png" : "/react-homepage/avi.png"} 
-        alt="test"
-        className={classes.profileAvatar}
+          src={darkMode ? "/react-homepage/avi2.png" : "/react-homepage/avi.png"} 
+          alt="test"
+          sx={{ width: 80, height: 80 }}
         />
-      </div>
-      <div className={classes.aboutSection}>
-        <CustomType>My name is Mubarak Yahaya, A programmer based in Nigeria.</CustomType>
-        <CustomType>I love good music, coffee and tweaking :)</CustomType>
-        <CustomType>My current development stack includes Python, javaScript(typeScript) and Linux</CustomType>
-      </div>
-      <div className={classes.projectBtnSection}>
-        <CustomType className={classes.margin}>Check out some of my</CustomType>
-        <CustomButton
-          className={classes.margin}
+      </StyledProfileAviDiv>
+      <StyledAboutDiv>
+        <CustomType>My name is Mubarak Yahaya, A developer based in Nigeria. </CustomType>
+        <CustomType>I love good music, coffee and tweaking stuff :) </CustomType>
+        <CustomType>My current development stack includes Python, javaScript( typeScript ) and Linux </CustomType>
+      </StyledAboutDiv>
+      <StyledParagraphDiv>
+        <CustomType>Check out some of my</CustomType>
+        <CustomBaseButton
+          variant={"contained"}
+          sx={{marginLeft:(theme) => theme.spacing(1)}}
           onClick={() => handleClick("projects")}
         >
           Projects
-        </CustomButton>
-      </div>
-      <div className={classes.projectBtnSection}>
-        <CustomType className={classes.margin}>What am i </CustomType>
-        <CustomButton
-          className={classes.margin}
+        </CustomBaseButton>
+      </StyledParagraphDiv>
+      <StyledParagraphDiv>
+        <CustomType>What am i </CustomType>
+        <CustomBaseButton
+          variant={"contained"}
+          sx={{marginLeft:(theme) => theme.spacing(1), marginRight:(theme) => theme.spacing(1)}}
           onClick={() => handleClick("nowPlaying")}
         >
           Listening
-        </CustomButton>
-        <CustomType className={classes.margin}>to?</CustomType>
-      </div>
-      <div className={classes.profileDiv} style={{marginTop: "15px"}}>
+        </CustomBaseButton>
+        <CustomType>to?</CustomType>
+      </StyledParagraphDiv>
+      <StyledBtnSectionDiv>
         <SocialIcon 
-          bgColor={darkMode ? theme.palette.primary.dark : "black"} 
+          bgColor={darkMode ? "#c95100" : "black"} 
           url={"https://github.com/mubrik"}
           title={"Github"}
         />
         <SocialIcon 
-          bgColor={darkMode ? theme.palette.primary.dark : "black"} 
+          bgColor={darkMode ? "#c95100" : "black"} 
           url={"mailto:mubarakg4u@gmail.com"}
           network={"email"}
           title={"Email"}
@@ -148,7 +157,8 @@ const ProfileView = ({setNav, show}: IProfileViewProps): JSX.Element => {
           url={"https://www.linkedin.com/in/mubarak-yahaya-957917163"}
           title={"LinkedIn"}
         />
-      </div>
+      </StyledBtnSectionDiv>
+      </StyledProfileCardDiv>
     </animated.div>
   );
 };

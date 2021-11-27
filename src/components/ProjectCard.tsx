@@ -1,60 +1,50 @@
 import * as React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import {CustomLinkButton} from './CustomComponents';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Skeleton from '@material-ui/lab/Skeleton';
+// material
+import { styled } from '@mui/system';
+import { Paper, Skeleton } from '@mui/material';
+import {CustomBaseButton} from './CustomComponents';
+// custom type
+import { CustomType } from './CustomComponents';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%"
+const StyledCardAreaDiv = styled("div")(({theme}) => ({
+  display: "grid",
+  gridTemplateRows: "auto",
+  padding: theme.spacing(0.4),
+  justifyItems: "center",
+  [theme.breakpoints.up("md")]: {
+    gridTemplateColumns: "auto auto",
   },
-  media: {
+}));
+
+const StyledCardTextAreaDiv = styled("div")(({theme}) => ({
+  padding: theme.spacing(0.4),
+  margin: theme.spacing(0.2),
+  display: "flex",
+  flexDirection: "column",
+  textAlign: "center"
+}));
+
+const StyledCardButtonAreaDiv = styled("div")(({theme}) => ({
+  padding: theme.spacing(0.4),
+  margin: theme.spacing(0.4),
+  display: "flex",
+  justifyContent: "space-evenly"
+}));
+
+const StyledImg = styled("img")(({theme}) => ({
+  maxHeight: 320,
+  minWidth: 120,
+  maxWidth: 200,
+  [theme.breakpoints.up("xs")]: {
     maxHeight: 320,
-    minWidth: 120,
-    maxWidth: 200,
-    [theme.breakpoints.up("xs")]: {
-      maxHeight: 320,
-      maxWidth: 400,
-      minWidth: 200,
-    },
-    [theme.breakpoints.up("md")]: {
-      maxHeight: 320,
-      maxWidth: 400,
-      minWidth: 320,
-    },
+    maxWidth: 400,
+    minWidth: 200,
   },
-  cardBodyArea: {
-    display: "flex",
-    flexDirection: "column"
+  [theme.breakpoints.up("md")]: {
+    maxHeight: 320,
+    maxWidth: 400,
+    minWidth: 320,
   },
-  cardDetailsArea: {
-    display: "grid",
-    gridTemplateRows: "auto",
-    padding: theme.spacing(0.4),
-    justifyItems: "center",
-    [theme.breakpoints.up("md")]: {
-      gridTemplateColumns: "auto auto",
-    },
-  }, 
-  cardTextArea : {
-    padding: theme.spacing(0.4),
-    margin: theme.spacing(0.2),
-    display: "flex",
-    flexDirection: "column",
-    textAlign: "center"
-  },
-  cardButtonArea : {
-    padding: theme.spacing(0.4),
-    margin: theme.spacing(0.4),
-    display: "flex",
-    justifyContent: "space-evenly"
-  },
-  padding: {
-    padding: theme.spacing(0.4),
-  }
 }));
 
 interface IJsonObj {
@@ -67,35 +57,39 @@ interface IJsonObj {
 }
 
 const ProjectCard = ({imageUri, content, siteLink, codeLink}: IJsonObj): JSX.Element => {
-  // styles
-  const classes = useStyles();
 
   return(
-    <Paper elevation={0} className={classes.root}>
-      <div className={classes.cardDetailsArea}>
+    <Paper 
+      elevation={0}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%"
+      }}
+    >
+      <StyledCardAreaDiv>
         {imageUri ? (
-            <img
-                className={classes.media}
-                alt={"ff"}
-                src={imageUri}
+            <StyledImg
+              alt={"placeholder"}
+              src={imageUri}
             />
             ) : (
-                <Skeleton className={classes.media} height={30} animation="wave"/>
+              <Skeleton width={60} height={30} animation="wave"/>
             )
         }
           
-        <div className={classes.cardTextArea}>
+        <StyledCardTextAreaDiv>
           <div>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <CustomType variant="body2">
               {content ? content : ""}
-            </Typography>
+            </CustomType>
           </div>
-          <div className={classes.cardButtonArea}>
-            {siteLink && <CustomLinkButton href={siteLink}>Check It Out</CustomLinkButton>}
-            <CustomLinkButton href={codeLink} >Git Code</CustomLinkButton>
-          </div>
-        </div>
-      </div>
+          <StyledCardButtonAreaDiv>
+            {siteLink && <CustomBaseButton href={siteLink}>Check It Out</CustomBaseButton>}
+            <CustomBaseButton href={codeLink} >Git Code</CustomBaseButton>
+          </StyledCardButtonAreaDiv>
+        </StyledCardTextAreaDiv>
+      </StyledCardAreaDiv>
     </Paper>
   );
 };

@@ -1,65 +1,37 @@
 import React from 'react';
-import { makeStyles } from "@material-ui/core/styles";
+// material
+import { styled } from '@mui/system';
+import { Accordion, AccordionDetails, AccordionSummary  } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+// icons
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// anim spring
 import { animated, useTransition } from 'react-spring';
-import Avatar from '@material-ui/core/Avatar';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ProjectCard from "./ProjectCard";
-import { CustomButton, CustomType} from './CustomComponents';
+import { CustomBaseButton, CustomType} from './CustomComponents';
 //types
 import {IHomePageState} from "./HomePage";
 
-const useStyles = makeStyles(theme => ({ 
-  profileCard: {
-    display: "none",
-    position: "relative",
-    flexDirection: "column",
-    height: "auto",
-    minWidth:"100%", // mobile
-    padding: theme.spacing(2),
-    border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
-    boxShadow: theme.palette.type === "dark"  ? "none" : `7px 10px 14px 1px #0000000d,
-    1px 3px 10px 1px #00000021`,
-    borderRadius: "0.9em",
-    [theme.breakpoints.up("xs")]: {
-      minWidth:"55%"
-    },
-    [theme.breakpoints.up("sm")]: {
-      minWidth:"65%"
-    },
-    [theme.breakpoints.up("xl")]: {
-      minWidth:"75%"
-    },
+const StyledProfileCardDiv = styled("div")(({theme}) => ({
+  position: "relative",
+  flexDirection: "column",
+  height: "auto",
+  padding: theme.spacing(2),
+  border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
+  boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
+  1px 3px 10px 1px #00000021`,
+  borderRadius: "0.9em",
+  minWidth:"100%", // mobile
+  [theme.breakpoints.up("xs")]: {
+      minWidth:"50vw"
   },
-  profileDiv: {
-    margin: theme.spacing(1),
-    display: "flex",
-    flexDirection: "column",
+  [theme.breakpoints.up("sm")]: {
+      minWidth:"55vw"
   },
-  backButton: {
-    alignSelf: "self-start",
-    margin: theme.spacing(1),
-    marginBottom: theme.spacing(2)
+  [theme.breakpoints.up("xl")]: {
+      minWidth:"58vw"
   },
-  spacing: {
-    margin: theme.spacing(1)
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
-    flexShrink: 0,
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.text.secondary,
-  },
-  avatar: {
-    height: "auto",
-    marginRight: theme.spacing(1)
-  }
 }));
 
 interface IProjectListView {
@@ -78,8 +50,6 @@ interface IJsonObj {
 
 const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
 
-    // material styles
-    const classes = useStyles();
     // states
     // handle accordions
     const [expanded, setExpanded] = React.useState<boolean|string>(false);
@@ -121,21 +91,25 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
 
     return transitions(
       (styles, show) => show && 
-        <animated.div className={classes.profileCard} style={styles}>
-          <div className={classes.profileDiv}>
-            <CustomButton
+        <animated.div style={styles}>
+          <StyledProfileCardDiv>
+            <CustomBaseButton
               size={"small"}
               onClick={handleClick}
-              className={classes.backButton}
+              sx={{
+                alignSelf: "self-start",
+                margin: (theme) =>  theme.spacing(1),
+                marginBottom: (theme) => theme.spacing(2)
+              }}
               startIcon={<ArrowBackIcon/>}
             >
               Home
-            </CustomButton>
+            </CustomBaseButton>
             { projData ? 
                 projData.map((item, index) => (
                   <Accordion
                     key={`panel${index}`}
-                    className={classes.spacing}
+                    sx={{margin:(theme) => theme.spacing(1)}}
                     expanded={expanded === `panel${index}`} 
                     onChange={(_, isExpanded) => handleChange(`panel${index}`, isExpanded)}
                   >
@@ -144,57 +118,27 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Avatar aria-label="title" className={classes.avatar} variant="rounded">
+                      <Avatar aria-label="title"  
+                        variant="rounded"
+                        sx={{
+                        height: "auto",
+                        marginRight:(theme) => theme.spacing(1)}}
+                      >
                         {item.header.slice(0, 1)}
                       </Avatar>
-                      <CustomType className={classes.heading}>{item.header}</CustomType>
-                      <CustomType className={classes.secondaryHeading}>{item.description}</CustomType>
+                      <CustomType>{item.header}</CustomType>
+                      <CustomType sx={{marginLeft: "auto", marginRight: "auto"}}>{item.description}</CustomType>
                     </AccordionSummary>
                     <AccordionDetails>
                       <ProjectCard {...item}/>
                     </AccordionDetails>
                   </Accordion>
-                  // <ProjectAccordion
-                  //   key={`panel${index}`}
-                  //   title={item.header}
-                  //   description={item.description}
-                  //   className={classes.spacing}
-                  //   expanded={expanded === `panel${index}`} 
-                  //   onChange={(_: React.ChangeEvent, isExpanded: boolean) => handleChange(`panel${index}`, isExpanded)}
-                  // >
-                  //   <ProjectCard {...item}/>
-                  // </ProjectAccordion>
                 )) :
                 null
             }
-          </div>
+          </StyledProfileCardDiv>
         </animated.div>
     );
 };
-
-// const ProjectAccordion = ({children, title, description, ...rest}): JSX.Element => {
-
-//   // material styles
-//   const classes = useStyles();
-
-//   return(
-//     <Accordion {...rest}>
-//       <AccordionSummary
-//         expandIcon={<ExpandMoreIcon />}
-//         aria-controls="panel1a-content"
-//         id="panel1a-header"
-//       >
-//         <Avatar aria-label="title" className={classes.avatar} variant="rounded">
-//           {title.slice(0, 1)}
-//         </Avatar>
-//         <CustomType className={classes.heading}>{title}</CustomType>
-//         <CustomType className={classes.secondaryHeading}>{description}</CustomType>
-//       </AccordionSummary>
-//       <AccordionDetails>
-//         {children}
-//       </AccordionDetails>
-//   </Accordion>
-//   );
-// };
 
 export default ProjectListView;
