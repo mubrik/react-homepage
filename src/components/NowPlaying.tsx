@@ -25,8 +25,6 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
   maxHeight: "80vh",
   padding: theme.spacing(1.2),
   border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
-  // boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
-  // 1px 3px 10px 1px #00000021`,
   borderRadius: "0.9em",
   minWidth:"100%", // mobile
   [theme.breakpoints.up("xs")]: {
@@ -43,11 +41,13 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
 const StyledResponsiveGrid = styled("div")(({theme}) => ({
   display: "grid",
   gridTemplateRows: " auto",
-  gap: "10px",
   overflow: "auto",
+  padding: theme.spacing(1),
   [theme.breakpoints.up("sm")]: {
     gridTemplateColumns: "1fr 0.8fr",
     overflow: "hidden",
+    gap: "10px",
+    padding: theme.spacing(0.5),
   },
 }));
 
@@ -204,8 +204,23 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
         <StyledResponsiveGrid>
           <Stack>
             { nowPlaying !== null &&
-            <Card sx={{ display: 'flex', justifyContent: "center", maxHeight: "84%" }} raised>
-              <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: "center", gap: 1}}>
+            <Card
+              raised
+              sx={{
+                display: 'flex',
+                justifyContent: "center", 
+                maxHeight: "84%",
+                borderRadius: "14px"
+              }} 
+            >
+              <Box sx={{
+                display: 'flex', 
+                flexDirection: 'column', 
+                textAlign: "center", 
+                gap: 1,
+                paddingTop: "5px"
+              }}
+              >
                 <Typography 
                   component="div"
                   variant="h4"
@@ -252,22 +267,23 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
             </Card>
             }
           </Stack>
-          <Stack direction={"column"} spacing={{ xs: 1, sm: 2, md: 1 }}>
+          <Stack direction={"column"} spacing={{ xs: 1, sm: 2, md: 1 }} >
             {
               recentPlays &&
               recentPlays.map((track, index) => (
                 <Card 
+                  raised
+                  key={index}
                   sx={{
                     display: 'flex',
-                    maxHeight: "21vh", 
+                    maxHeight: "21vh",
+                    borderRadius: "14px", 
                     maxWidth: {
                       xs: "auto",
-                      sm: "auto",
+                      sm: "340px",
                       md: "420px"
                     },
                   }} 
-                  key={index}
-                  raised
                 >
                   <CardContent sx={{ flex: '1 1 auto' }}>
                     <Typography 
