@@ -34,7 +34,6 @@ const NavButton = ({setNav}:INavProps): JSX.Element => {
 
   // handle click, mount element
   const handleMenuClick = (_event: React.MouseEvent<HTMLButtonElement>): void => {
-    console.log(_event);
     setAnchorEl(_event.currentTarget.parentElement);
   };
   // handle menu close
