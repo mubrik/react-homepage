@@ -12,7 +12,13 @@ import {IHomePageState} from "./HomePage";
 const StyledDiv = styled("div")(({theme}) => ({
   position: "relative",
   border: `1px solid ${theme.palette.type == "dark" ? theme.palette.secondary.main : theme.palette.primary.main}`,
-  borderRadius: "15px"
+  borderRadius: "18px",
+  [theme.breakpoints.up("md")]: {
+    marginLeft: theme.spacing(6)
+  },
+  [theme.breakpoints.up("lg")]: {
+    marginLeft: theme.spacing(8)
+  },
 }));
 
 interface INavProps {
@@ -23,35 +29,20 @@ const NavButton = ({setNav}:INavProps): JSX.Element => {
   // darkmode
   const {darkMode} = useDarkMode();
   // states
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement|null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement|HTMLElement|null>(null);
   const menuShow = Boolean(anchorEl);
 
   // handle click, mount element
   const handleMenuClick = (_event: React.MouseEvent<HTMLButtonElement>): void => {
-    setAnchorEl(_event.currentTarget);
+    console.log(_event);
+    setAnchorEl(_event.currentTarget.parentElement);
   };
   // handle menu close
-  const handleMenuItemClick = (str: string): void => {
-    switch (str) {
-      case "projects":
-        setNav("projects");
-        setAnchorEl(null);
-        break;
-      
-      case "home":
-        setNav("home");
-        setAnchorEl(null);
-        break;
-      
-      case "nowPlaying":
-        setNav("nowPlaying");
-        setAnchorEl(null);
-        break;
-  
-      default:
-        setAnchorEl(null);
-        break;
+  const handleMenuItemClick = (param?: IHomePageState): void => {
+    if (param) {
+      setNav(param);
     }
+    setAnchorEl(null);
   };
 
   return (
@@ -67,7 +58,7 @@ const NavButton = ({setNav}:INavProps): JSX.Element => {
     <Menu
       open={menuShow}
       anchorEl={anchorEl}
-      onClose={handleMenuItemClick}
+      onClose={() => handleMenuItemClick()}
       id="faded-menu"
       TransitionComponent={Fade}
     >
@@ -78,15 +69,5 @@ const NavButton = ({setNav}:INavProps): JSX.Element => {
     </StyledDiv>
   );
 };
-
-
-// const CustomFade = React.forwardRef((props, ref) => (<Fade {...props} ref={ref} />));
-// CustomFade.displayName = "CustomFade";
-
-// const CustomMenu = React.forwardRef((props, ref) => (<Menu {...props} ref={ref}/>));
-// CustomMenu.displayName = "CustomMenu";
-
-// const CustomMenuItem = React.forwardRef((props, ref) => (<MenuItem {...props} ref={ref}/>));
-// CustomMenuItem.displayName = "CustomMenuItem";
 
 export default NavButton;

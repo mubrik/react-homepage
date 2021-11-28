@@ -40,7 +40,7 @@
         },
         {
             "header":"MS Sharepoint Time-sheet Webpart",
-            "description": "A webaprt created for use on MS Sharepoint online",
+            "description": "A webpart created for use on MS Sharepoint online",
             "content": "App is used to log different projects/tasks carried out by agents in a timeperiod for the organization",
             "codeLink": "https://github.com/mubrik/sharepoint-WB-timesheet",
             "imageUri": "/react-homepage/webpartTS.gif"

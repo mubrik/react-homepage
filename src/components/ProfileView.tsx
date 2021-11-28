@@ -57,13 +57,13 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
   borderRadius: "0.9em",
   minWidth:"100%", // mobile
   [theme.breakpoints.up("xs")]: {
-      minWidth:"50vw"
+    minWidth:"50vw"
   },
   [theme.breakpoints.up("sm")]: {
-      minWidth:"55vw"
+    minWidth:"55vw"
   },
   [theme.breakpoints.up("xl")]: {
-      minWidth:"58vw"
+    minWidth:"58vw"
   },
 }));
 
@@ -73,27 +73,26 @@ interface IProfileViewProps {
 }
 
 const ProfileView = ({setNav, show}: IProfileViewProps): JSX.Element => {
-  // material styles
-  // const theme = useTheme();
 
   // anim transitions props
   const transitions = useTransition(show, {
-      from: {
-          display: "none",
-          transform: "scale(0.2)",
-      },
-      enter: {
-          delay: 500,
-          display: "flex",
-          transform: "scale(1)",
-      },
-      leave: {
-          transform: "scale(0)",
-      },
-      expires: 2
+    from: {
+      display: "none",
+      transform: "scale(0.2)",
+    },
+    enter: {
+      delay: 500,
+      display: "flex",
+      transform: "scale(1)",
+    },
+    leave: {
+      transform: "scale(0)",
+    },
+    expires: 2
   });
   // darkmode
-  const {darkMode} = useDarkMode();
+  const { darkMode } = useDarkMode();
+  
   // handle button clicks
   const handleClick = (param: IHomePageState): void => {
     setNav(param);

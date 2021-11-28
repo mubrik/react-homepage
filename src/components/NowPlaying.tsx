@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import { Stack } from "@mui/material";
 // icon
 import LoadingButton from '@mui/lab/LoadingButton';
+import ListIcon from '@mui/icons-material/List';
+import HomeIcon from '@mui/icons-material/Home';
 // transitions
 import { animated, useTransition } from 'react-spring';
 // types
@@ -16,7 +18,7 @@ import {IHomePageState} from "./HomePage";
 // drkmode
 import { useDarkMode } from "../App";
 // custom
-import { CustomType } from "./CustomComponents";
+import { CustomType, CustomBaseButton } from "./CustomComponents";
 
 const StyledProfileCardDiv = styled("div")(({theme}) => ({
   position: "relative",
@@ -49,6 +51,14 @@ const StyledResponsiveGrid = styled("div")(({theme}) => ({
     gap: "10px",
     padding: theme.spacing(0.5),
   },
+}));
+
+const StyledNavAreaDiv = styled("div")(({theme}) => ({
+  display: "flex",
+  width: "100%",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: theme.spacing(1)
 }));
 
 type IDataState = "idle"| "loaded" | "loading"
@@ -118,7 +128,7 @@ const prepareData = (param: ITrackObj, type?: string):ISongDetail => {
   return _stateData;
 };
 
-const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
+const NowPlaying = ({setNav, pageState, show}: INowPlayingProps): JSX.Element => {
 
   // states
   const [nowPlaying, setNowPlaying] = React.useState<ISongDetail|null>(null);
@@ -185,22 +195,50 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
     // refresh 
     setDataState("idle");
   };
- 
+  
+  const handleNavClick = (param: IHomePageState): void => {
+    setNav(param);
+  };
+
   return transitions(
     (styles, show) => show &&
     <animated.div style={styles}>
     <StyledProfileCardDiv>
       <Stack sx={{ gap: 1, maxHeight: "97%", position:"relative" }}>
-        <Stack direction={"row"} justifyContent={"flex-end"}>
+        <StyledNavAreaDiv>
+          <CustomBaseButton
+            size={"small"}
+            onClick={() => handleNavClick("home")}
+            sx={{
+              marginLeft: (theme) =>  theme.spacing(1),
+            }}
+            startIcon={<HomeIcon/>}
+          >
+            Home
+          </CustomBaseButton>
+          <CustomBaseButton
+            size={"small"}
+            onClick={() => handleNavClick("projects")}
+            sx={{
+              marginLeft: (theme) =>  theme.spacing(1),
+            }}
+            startIcon={<ListIcon/>}
+          >
+            Projects
+          </CustomBaseButton>
           <LoadingButton
+            size={"small"}
             onClick={handleRefreshClick}
             loading={dataState === "loading" }
             variant="outlined"
             color={darkMode ? "secondary" : "primary"}
+            sx={{
+              marginRight: (theme) => theme.spacing(1)
+            }}
           >
             Refresh
           </LoadingButton>
-        </Stack>
+        </StyledNavAreaDiv>
         <StyledResponsiveGrid>
           <Stack>
             { nowPlaying !== null &&

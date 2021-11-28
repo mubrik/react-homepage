@@ -4,7 +4,8 @@ import { styled } from '@mui/system';
 import { Accordion, AccordionDetails, AccordionSummary  } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 // icons
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 // anim spring
 import { animated, useTransition } from 'react-spring';
@@ -24,14 +25,22 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
   borderRadius: "0.9em",
   minWidth:"100%", // mobile
   [theme.breakpoints.up("xs")]: {
-      minWidth:"50vw"
+    minWidth:"50vw"
   },
   [theme.breakpoints.up("sm")]: {
-      minWidth:"55vw"
+    minWidth:"55vw"
   },
   [theme.breakpoints.up("xl")]: {
-      minWidth:"58vw"
+    minWidth:"58vw"
   },
+}));
+
+const StyledNavAreaDiv = styled("div")(({theme}) => ({
+  display: "flex",
+  width: "100%",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: theme.spacing(1)
 }));
 
 interface IProjectListView {
@@ -62,7 +71,7 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
         transform: "translateX(80%)",
       },
       enter: {
-        delay: 600,
+        delay: 500,
         display: "flex",
         transform: "translateX(0%)",
       },
@@ -81,8 +90,8 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
         });
     }, []);
     // handle button clicks
-    const handleClick = (): void => {
-      setNav("home");
+    const handleClick = (param:IHomePageState ): void => {
+      setNav(param);
     };
 
     const handleChange = (panel: string, isExpanded: boolean): void => {
@@ -93,18 +102,28 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
       (styles, show) => show && 
         <animated.div style={styles}>
           <StyledProfileCardDiv>
-            <CustomBaseButton
-              size={"small"}
-              onClick={handleClick}
-              sx={{
-                alignSelf: "self-start",
-                margin: (theme) =>  theme.spacing(1),
-                marginBottom: (theme) => theme.spacing(2)
-              }}
-              startIcon={<ArrowBackIcon/>}
-            >
-              Home
-            </CustomBaseButton>
+            <StyledNavAreaDiv>
+              <CustomBaseButton
+                size={"small"}
+                onClick={() => handleClick("home")}
+                sx={{
+                  marginLeft: (theme) =>  theme.spacing(1),
+                }}
+                startIcon={<HomeIcon/>}
+              >
+                Home
+              </CustomBaseButton>
+              <CustomBaseButton
+                size={"small"}
+                onClick={() => handleClick("nowPlaying")}
+                sx={{
+                  marginRight: (theme) =>  theme.spacing(1),
+                }}
+                startIcon={<MusicNoteIcon/>}
+              >
+                Playlist
+              </CustomBaseButton>
+            </StyledNavAreaDiv>
             { projData ? 
                 projData.map((item, index) => (
                   <Accordion

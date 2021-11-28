@@ -7,8 +7,13 @@ import {useDarkMode} from "../App";
 // icons
 import { EmojiObjectsOutlined } from '@mui/icons-material';
 
-const StyledDiv = styled("div")(() => ({
+const StyledDiv = styled("div")(({theme}) => ({
   position: "relative",
+  [theme.breakpoints.up("md")]: {
+    marginRight: theme.spacing(6)
+  },[theme.breakpoints.up("lg")]: {
+    marginRight: theme.spacing(8)
+  },
 }));
 
 const DarkModeSwitch = (): JSX.Element => {
