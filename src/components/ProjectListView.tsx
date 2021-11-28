@@ -54,7 +54,7 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
     // handle accordions
     const [expanded, setExpanded] = React.useState<boolean|string>(false);
     // project data
-    const [projData, setProjData] = React.useState<IJsonObj[]>(null);
+    const [projData, setProjData] = React.useState<IJsonObj[]|null>(null);
     // anim transitions props
     const transitions = useTransition(show, {
       from: {

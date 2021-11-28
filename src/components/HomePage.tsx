@@ -13,14 +13,28 @@ const StyledRootDiv = styled("div")(({theme}) => ({
   display: "flex",
   flexDirection: "column",
   position: "relative",
-  minHeight: "100vh",
+  minHeight: "92vh",
+  alignItems: "center",
+  justifyContent: "start",
+  padding: theme.spacing(0.8),
+  [theme.breakpoints.up("sm")]: {
+    justifyContent: "center",
+  }
+}));
+
+const StyledNavAreaDiv = styled("nav")(({theme}) => ({
+  display: "flex",
+  width: "100%",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: theme.spacing(1)
+}));
+
+const StyledBackgroundDiv = styled("div")(({theme}) => ({
   background: `linear-gradient(
     180deg,
     ${theme.palette.background.default} 65%,
     ${theme.palette.type === "dark" ? theme.palette.primary.main : theme.palette.secondary.main}6e 300%)`,
-  alignItems: "center",
-  justifyContent: "center",
-  padding: theme.spacing(0.8)
 }));
 
 // page state enum
@@ -32,10 +46,12 @@ const Homepage = (): JSX.Element => {
   const [pageState, setPageState] = React.useState<IHomePageState>("home");
 
   return(
-    <>
-    <StyledRootDiv>
+    <StyledBackgroundDiv>
+    <StyledNavAreaDiv>
       <NavButton setNav={setPageState}/>
       <DarkModeSwitch/>
+    </StyledNavAreaDiv>
+    <StyledRootDiv>
       {
         pageState === "home" &&
         <ProfileView 
@@ -59,7 +75,7 @@ const Homepage = (): JSX.Element => {
         />
       }
     </StyledRootDiv>
-    </>
+    </StyledBackgroundDiv>
   );
 };
 

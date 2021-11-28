@@ -19,13 +19,17 @@ const CustomType = ({children, ...rest}: TypographyProps): JSX.Element=> {
 };
 
 const CustomBaseButton = ({children, href, variant, onClick,  ...rest}: ButtonProps):JSX.Element => {
+  // href may or may not be passed in
+  const _href = href ? href : "";
 
   // darkmode
   const {darkMode} = useDarkMode();
   // handle click, cant use "target" for TS?, need links to open in new tab
   const handleLink = (href: string, event?:React.MouseEvent<HTMLButtonElement>): void => {
     // prev default
-    event.preventDefault();
+    if (event) {
+      event.preventDefault();
+    }
     // manually open
     window.open(href, "_blank");
   };
@@ -34,7 +38,7 @@ const CustomBaseButton = ({children, href, variant, onClick,  ...rest}: ButtonPr
     <Button 
       color={darkMode ? "secondary" : "primary"}
       variant={variant ? variant : "outlined"}
-      onClick={onClick ? onClick : (e) => handleLink(href, e)}
+      onClick={onClick ? onClick : (e) => handleLink(_href, e)}
       href={href ? href : ""}
       {...rest}
     >

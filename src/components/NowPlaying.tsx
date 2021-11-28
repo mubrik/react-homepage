@@ -6,9 +6,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-// icon
 import { Stack } from "@mui/material";
-import RefreshIcon from '@mui/icons-material/Refresh';
+// icon
+import LoadingButton from '@mui/lab/LoadingButton';
 // transitions
 import { animated, useTransition } from 'react-spring';
 // types
@@ -23,20 +23,31 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
   flexDirection: "column",
   height: "auto",
   maxHeight: "80vh",
-  padding: theme.spacing(2),
+  padding: theme.spacing(1.2),
   border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
-  boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
-  1px 3px 10px 1px #00000021`,
+  // boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
+  // 1px 3px 10px 1px #00000021`,
   borderRadius: "0.9em",
   minWidth:"100%", // mobile
   [theme.breakpoints.up("xs")]: {
-      minWidth:"50vw"
+    minWidth:"50vw"
   },
   [theme.breakpoints.up("sm")]: {
-      minWidth:"55vw"
+    minWidth:"55vw"
   },
-  [theme.breakpoints.up("xl")]: {
-      minWidth:"58vw"
+  [theme.breakpoints.up("lg")]: {
+    minWidth:"58vw"
+  },
+}));
+
+const StyledResponsiveGrid = styled("div")(({theme}) => ({
+  display: "grid",
+  gridTemplateRows: " auto",
+  gap: "10px",
+  overflow: "auto",
+  [theme.breakpoints.up("sm")]: {
+    gridTemplateColumns: "1fr 0.8fr",
+    overflow: "hidden",
   },
 }));
 
@@ -69,12 +80,50 @@ interface ISongDetail {
   timeMs: string;
 }
 
+// making this as for some reason react spring kept bugging while using "#text" from lastfm
+const prepareData = (param: ITrackObj, type?: string):ISongDetail => {
+
+  // copy
+  const newData = {...param};
+  // initial data
+  const _stateData: ISongDetail = {
+    artist: "",
+    title: "",
+    image: "",
+    date: "",
+    timeMs: ""
+  };
+
+  // mutate.. apparently bug might be from last fm? 
+  // ah, i'm dumb, i use last fm apis and forgot date isnt available until the track is scrobbled. smfh, facepalm
+  // for now playing track, the details are available but date isnt, which could cause the object key being absent
+  // already made the function, so amma just leave it here
+  _stateData.artist = newData?.artist?.["#text"] ? newData.artist["#text"] : "placeholder";
+  _stateData.date = newData?.date?.["#text"] ? newData.date["#text"] : "";
+  _stateData.timeMs = newData?.date?.["uts"] ? newData.date["uts"] : "placeholder";
+  _stateData.title = newData?.name ? newData.name  : "placeholder";
+  // array index 2 has large sinze image link
+  _stateData.image = newData?.image[2]["#text"] ? newData.image[2]["#text"] : "";
+  if (type === "nowPlaying") {
+    // could be recent track, get time if available
+    const _playtime = newData?.date?.uts ? newData.date.uts : null;
+
+    if (_playtime) {
+      // work on later
+      const currTime = new Date();
+    }
+
+  }
+  // return data
+  return _stateData;
+};
+
 const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
 
   // states
-  const [nowPlaying, setNowPlaying] = React.useState<ISongDetail>(null);
-  const [recentPlays, setRecentPlays] = React.useState<ISongDetail[]>(null);
-  const [dataState, setDataState] = React.useState<IDataState>("idle");
+  const [nowPlaying, setNowPlaying] = React.useState<ISongDetail|null>(null);
+  const [recentPlays, setRecentPlays] = React.useState<ISongDetail[]|null>(null);
+  const [dataState, setDataState] = React.useState<IDataState|null>("idle");
 
   // darkmode 
   const {darkMode} = useDarkMode();
@@ -86,7 +135,7 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
 
     try {
       const response = await fetch(
-        `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=mubrik&api_key=ae2c676a4406b4a3afdbe1f31413b72c&format=json&limit=5`
+        `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=mubrik&api_key=ae2c676a4406b4a3afdbe1f31413b72c&format=json&limit=4`
       );
       const result = await response.json();
   
@@ -98,6 +147,7 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
       setNowPlaying(_nowPlaying);
       setRecentPlays(_recentPlays);
     } catch (error) {
+      // install notisstack for notifications later/ crreat custom comp
       console.log(error);
       setNowPlaying(null);
       setRecentPlays(null);
@@ -116,16 +166,16 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
   // anim transitions props
   const transitions = useTransition(show, {
     from: {
-        display: "none",
-        transform: "scale(0.2)",
+      display: "none",
+      transform: "scale(0.2)",
     },
     enter: {
-        delay: 500,
-        display: "flex",
-        transform: "scale(1)",
+      delay: 500,
+      display: "flex",
+      transform: "scale(1)",
     },
     leave: {
-        transform: "scale(0)",
+      transform: "scale(0)",
     },
     expires: 2
   });
@@ -135,68 +185,27 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
     // refresh 
     setDataState("idle");
   };
-
-  // making this as for some reason react spring kept bugging while using "#text" from lastfm
-  const prepareData = (param: ITrackObj, type?: string):ISongDetail => {
-
-    // copy
-    const newData = {...param};
-    // initial data
-    const _stateData: ISongDetail = {
-      artist: "",
-      title: "",
-      image: "",
-      date: "",
-      timeMs: ""
-    };
-
-    // mutate.. apparently bug might be from last fm? 
-    // ah, i'm dumb, i use last fm apis and forgot date isnt available until the track is scrobbled. smfh, facepalm
-    // for now playing track, the details are available but date isnt, which could cause the object key being absent
-    _stateData.artist = newData?.artist?.["#text"] ? newData.artist["#text"] : "placeholder";
-    _stateData.date = newData?.date?.["#text"] ? newData.date["#text"] : "";
-    _stateData.timeMs = newData?.date?.["uts"] ? newData.date["uts"] : "placeholder";
-    _stateData.title = newData?.name ? newData.name  : "placeholder";
-    // array index 2 has large sinze image link
-    _stateData.image = newData?.image[2]["#text"] ? newData.image[2]["#text"] : "";
-    if (type === "nowPlaying") {
-      // could be recent track, get time if available
-      const _playtime = newData?.date?.uts ? newData.date.uts : null;
-
-      if (_playtime) {
-        // work on later
-        const currTime = new Date();
-      }
-
-    }
-    // return data
-    return _stateData;
-  };
  
   return transitions(
     (styles, show) => show &&
     <animated.div style={styles}>
     <StyledProfileCardDiv>
-      <Stack sx={{ gap: 1, height: "100%", position:"relative" }}>
+      <Stack sx={{ gap: 1, maxHeight: "97%", position:"relative" }}>
         <Stack direction={"row"} justifyContent={"flex-end"}>
-          <RefreshIcon
-            aria-label={"refresh"}
+          <LoadingButton
+            onClick={handleRefreshClick}
+            loading={dataState === "loading" }
+            variant="outlined"
             color={darkMode ? "secondary" : "primary"}
-            onClick={handleRefreshClick} 
-            sx={{cursor: dataState === "loading" ?  "progress" : "pointer"}} 
-          />
+          >
+            Refresh
+          </LoadingButton>
         </Stack>
-        <Stack direction={"row"} 
-          sx={{ display: "grid",
-            gridTemplateColumns: "1fr 0.6fr",
-            gap: 1, 
-            flexWrap: "wrap" 
-          }}
-        >
+        <StyledResponsiveGrid>
           <Stack>
             { nowPlaying !== null &&
-            <Card sx={{ display: 'flex', justifyContent: "center" }}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: "center", gap: 2 }}>
+            <Card sx={{ display: 'flex', justifyContent: "center", maxHeight: "84%" }} raised>
+              <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: "center", gap: 1}}>
                 <Typography 
                   component="div"
                   variant="h4"
@@ -213,9 +222,7 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
                     "https://media.giphy.com/media/l46Ci4XuSbWL249fq/giphy.gif" :
                     nowPlaying.image
                   }
-                  sx={{
-                    maxHeight: "500px"
-                  }}
+                  sx={{maxHeight: "60%"}}
                   alt="Live from space album cover"
                 />
                 <CardContent sx={{ flex: '1 1 auto' }}>
@@ -245,16 +252,29 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
             </Card>
             }
           </Stack>
-          <Stack sx={{ display: 'flex', flexDirection: 'column', gap: 2}}>
+          <Stack direction={"column"} spacing={{ xs: 1, sm: 2, md: 1 }}>
             {
               recentPlays &&
               recentPlays.map((track, index) => (
-                <Card sx={{ display: 'flex', height: "22%" }} key={index}>
-                  <CardContent sx={{ flex: '1 0 auto' }}>
+                <Card 
+                  sx={{
+                    display: 'flex',
+                    maxHeight: "21vh", 
+                    maxWidth: {
+                      xs: "auto",
+                      sm: "auto",
+                      md: "420px"
+                    },
+                  }} 
+                  key={index}
+                  raised
+                >
+                  <CardContent sx={{ flex: '1 1 auto' }}>
                     <Typography 
                       component="div"
                       variant="h5"
                       color={darkMode ? "textPrimary" : "textSecondary"}
+                      sx={{overflow: "hidden"}}
                     >
                       {track.title} 
                     </Typography>
@@ -277,7 +297,7 @@ const NowPlaying = ({pageState, show}: INowPlayingProps): JSX.Element => {
               ))
             }
           </Stack>
-        </Stack>
+        </StyledResponsiveGrid>
         <Stack direction={"row"} justifyContent={"flex-end"}>
           <CustomType 
             variant="subtitle1"

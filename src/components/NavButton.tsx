@@ -10,15 +10,9 @@ import {IHomePageState} from "./HomePage";
 
 // styled
 const StyledDiv = styled("div")(({theme}) => ({
-  position: "absolute",
+  position: "relative",
   border: `1px solid ${theme.palette.type == "dark" ? theme.palette.secondary.main : theme.palette.primary.main}`,
-  borderRadius: "15px",
-  left: "20px",
-  top: "15px",
-  [theme.breakpoints.up("sm")]: {
-    left: "50px",
-    top: "50px"
-  },
+  borderRadius: "15px"
 }));
 
 interface INavProps {

@@ -10,7 +10,9 @@
     "strict": true,
     "skipLibCheck": true,
     "inlineSources": false,
-    "strictNullChecks": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
     "noUnusedLocals": false,
     "lib": [
       "dom",

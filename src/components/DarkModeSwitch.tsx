@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 // material
 import { styled } from '@mui/system';
 import { IconButton } from '@mui/material';
@@ -7,15 +7,8 @@ import {useDarkMode} from "../App";
 // icons
 import { EmojiObjectsOutlined } from '@mui/icons-material';
 
-const StyledDiv = styled("div")(({theme}) => ({
-  margin: 0,
-  position: "absolute",
-  right: "20px",
-  top: "12px",
-  [theme.breakpoints.up("sm")]: {
-    right: "50px",
-    top: "50px"
-  },
+const StyledDiv = styled("div")(() => ({
+  position: "relative",
 }));
 
 const DarkModeSwitch = (): JSX.Element => {
