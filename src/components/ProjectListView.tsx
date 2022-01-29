@@ -19,9 +19,8 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
   flexDirection: "column",
   height: "auto",
   padding: theme.spacing(2),
-  border: theme.palette.type === "dark" ? `1px solid ${theme.palette.primary.light}21` : "none",
-  boxShadow: theme.palette.type === "dark"? "none" : `7px 10px 14px 1px #0000000d,
-  1px 3px 10px 1px #00000021`,
+  border: theme.palette.type === "dark" ? `1px solid ${theme.palette.secondary.light}52` : "1px solid #3b47dd40",
+  boxShadow: theme.palette.type === "dark"? "none" : `rgb(0 0 0 / 15%) 1px 1px 9px 1px`,
   borderRadius: "0.9em",
   minWidth:"100%", // mobile
   [theme.breakpoints.up("xs")]: {

@@ -243,11 +243,12 @@ const NowPlaying = ({setNav, pageState, show}: INowPlayingProps): JSX.Element =>
           <Stack>
             { nowPlaying !== null &&
             <Card
-              raised
               sx={{
                 display: 'flex',
                 justifyContent: "center", 
                 maxHeight: "84%",
+                boxShadow: "rgb(0 0 0 / 17%) 1px 1px 6px 0px",
+                border: "1px solid #0000002e",
                 borderRadius: "14px"
               }} 
             >
@@ -310,11 +311,12 @@ const NowPlaying = ({setNav, pageState, show}: INowPlayingProps): JSX.Element =>
               recentPlays &&
               recentPlays.map((track, index) => (
                 <Card 
-                  raised
                   key={index}
                   sx={{
                     display: 'flex',
                     maxHeight: "21vh",
+                    boxShadow: "rgb(0 0 0 / 17%) 1px 1px 6px 0px",
+                    border: "1px solid #0000002e",
                     borderRadius: "14px", 
                     maxWidth: {
                       xs: "auto",
