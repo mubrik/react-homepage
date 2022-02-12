@@ -11,8 +11,8 @@ import { Stack } from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import ListIcon from '@mui/icons-material/List';
 import HomeIcon from '@mui/icons-material/Home';
-// transitions
-import { animated, useTransition } from 'react-spring';
+// animation
+import { motion } from "framer-motion";
 // types
 import {IHomePageState} from "./HomePage";
 // drkmode
@@ -173,23 +173,6 @@ const NowPlaying = ({setNav, pageState, show}: INowPlayingProps): JSX.Element =>
     }
   }, [pageState, dataState]);
 
-  // anim transitions props
-  const transitions = useTransition(show, {
-    from: {
-      display: "none",
-      transform: "scale(0.2)",
-    },
-    enter: {
-      delay: 500,
-      display: "flex",
-      transform: "scale(1)",
-    },
-    leave: {
-      transform: "scale(0)",
-    },
-    expires: 2
-  });
-
   // handlers
   const handleRefreshClick = ():void => {
     // refresh 
@@ -200,170 +183,205 @@ const NowPlaying = ({setNav, pageState, show}: INowPlayingProps): JSX.Element =>
     setNav(param);
   };
 
-  return transitions(
-    (styles, show) => show &&
-    <animated.div style={styles}>
-    <StyledProfileCardDiv>
-      <Stack sx={{ gap: 1, maxHeight: "97%", position:"relative" }}>
-        <StyledNavAreaDiv>
-          <CustomBaseButton
-            size={"small"}
-            onClick={() => handleNavClick("home")}
-            sx={{
-              marginLeft: (theme) =>  theme.spacing(1),
-            }}
-            startIcon={<HomeIcon/>}
-          >
-            Home
-          </CustomBaseButton>
-          <CustomBaseButton
-            size={"small"}
-            onClick={() => handleNavClick("projects")}
-            sx={{
-              marginLeft: (theme) =>  theme.spacing(1),
-            }}
-            startIcon={<ListIcon/>}
-          >
-            Projects
-          </CustomBaseButton>
-          <LoadingButton
-            size={"small"}
-            onClick={handleRefreshClick}
-            loading={dataState === "loading" }
-            variant="outlined"
-            color={darkMode ? "secondary" : "primary"}
-            sx={{
-              marginRight: (theme) => theme.spacing(1)
-            }}
-          >
-            Refresh
-          </LoadingButton>
-        </StyledNavAreaDiv>
-        <StyledResponsiveGrid>
-          <Stack>
-            { nowPlaying !== null &&
-            <Card
+  return(
+    <motion.div
+      // animate in div
+      initial={{
+        position: "absolute",
+        display: 'flex',
+        top: "0%",
+        left: "0%",
+        scale: 0.3,
+      }}
+      animate={{
+        top: "50%",
+        left: "50%",
+        scale: 1,
+        translateX: "-50%",
+        translateY: "-50%",
+        transitionEnd: {
+          position: "relative",
+          top: 0,
+          left: 0,
+          translateX: "0%",
+          translateY: "0%"
+        }
+      }}
+      exit={{
+        translateX: "70%",
+        translateY: "80%",
+        scale: 0.2,
+        transition: {
+          duration: 0.3
+        }
+      }}
+      transition={{
+        duration: 1,
+        type: "spring",
+        when: "beforeChildren"
+      }}
+    >
+      <StyledProfileCardDiv>
+        <Stack sx={{ gap: 1, maxHeight: "97%", position:"relative" }}>
+          <StyledNavAreaDiv>
+            <CustomBaseButton
+              size={"small"}
+              onClick={() => handleNavClick("home")}
               sx={{
-                display: 'flex',
-                justifyContent: "center", 
-                maxHeight: "84%",
-                boxShadow: "rgb(0 0 0 / 17%) 1px 1px 6px 0px",
-                border: "1px solid #0000002e",
-                borderRadius: "14px"
-              }} 
-            >
-              <Box sx={{
-                display: 'flex', 
-                flexDirection: 'column', 
-                textAlign: "center", 
-                gap: 1,
-                paddingTop: "5px"
+                marginLeft: (theme) =>  theme.spacing(1),
               }}
+              startIcon={<HomeIcon/>}
+            >
+              Home
+            </CustomBaseButton>
+            <CustomBaseButton
+              size={"small"}
+              onClick={() => handleNavClick("projects")}
+              sx={{
+                marginLeft: (theme) =>  theme.spacing(1),
+              }}
+              startIcon={<ListIcon/>}
+            >
+              Projects
+            </CustomBaseButton>
+            <LoadingButton
+              size={"small"}
+              onClick={handleRefreshClick}
+              loading={dataState === "loading" }
+              variant="outlined"
+              color={darkMode ? "secondary" : "primary"}
+              sx={{
+                marginRight: (theme) => theme.spacing(1)
+              }}
+            >
+              Refresh
+            </LoadingButton>
+          </StyledNavAreaDiv>
+          <StyledResponsiveGrid>
+            <Stack>
+              { nowPlaying !== null &&
+              <Card
+                sx={{
+                  display: 'flex',
+                  justifyContent: "center", 
+                  maxHeight: "84%",
+                  boxShadow: "rgb(0 0 0 / 17%) 1px 1px 6px 0px",
+                  border: "1px solid #0000002e",
+                  borderRadius: "14px"
+                }} 
               >
-                <Typography 
-                  component="div"
-                  variant="h4"
-                  color={darkMode ? "text.primary" : "text.secondary"}
+                <Box sx={{
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  textAlign: "center", 
+                  gap: 1,
+                  paddingTop: "5px"
+                }}
                 >
-                  Now Playing
-                </Typography>
-                <CardMedia
-                  component="img"
-                  image={
-                    nowPlaying.image === "" ?
-                    // load a placeholder
-                    darkMode ? "https://media.giphy.com/media/jx8f8LrkhIOyAy6gcM/giphy.gif" :
-                    "https://media.giphy.com/media/l46Ci4XuSbWL249fq/giphy.gif" :
-                    nowPlaying.image
-                  }
-                  sx={{maxHeight: "60%"}}
-                  alt="Live from space album cover"
-                />
-                <CardContent sx={{ flex: '1 1 auto' }}>
                   <Typography 
                     component="div"
-                    variant="h5"
+                    variant="h4"
                     color={darkMode ? "text.primary" : "text.secondary"}
                   >
-                    {nowPlaying.title}
+                    Now Playing
                   </Typography>
-                  <Typography 
-                    variant="subtitle1"
-                    color={darkMode ? "text.primary" : "text.secondary"}
-                    component="div"
-                  >
-                    {nowPlaying.artist}
-                  </Typography>
-                  <Typography 
-                    variant="subtitle1"
-                    color={darkMode ? "text.primary" : "text.secondary"}
-                    component="div"
-                  >
-                    {nowPlaying.date}
-                  </Typography>
-                </CardContent>
-              </Box>
-            </Card>
-            }
-          </Stack>
-          <Stack direction={"column"} spacing={{ xs: 1, sm: 2, md: 1 }} >
-            {
-              recentPlays &&
-              recentPlays.map((track, index) => (
-                <Card 
-                  key={index}
-                  sx={{
-                    display: 'flex',
-                    maxHeight: "21vh",
-                    boxShadow: "rgb(0 0 0 / 17%) 1px 1px 6px 0px",
-                    border: "1px solid #0000002e",
-                    borderRadius: "14px", 
-                    maxWidth: {
-                      xs: "auto",
-                      sm: "340px",
-                      md: "420px"
-                    },
-                  }} 
-                >
+                  <CardMedia
+                    component="img"
+                    image={
+                      nowPlaying.image === "" ?
+                      // load a placeholder
+                      darkMode ? "https://media.giphy.com/media/jx8f8LrkhIOyAy6gcM/giphy.gif" :
+                      "https://media.giphy.com/media/l46Ci4XuSbWL249fq/giphy.gif" :
+                      nowPlaying.image
+                    }
+                    sx={{maxHeight: "60%"}}
+                    alt="Live from space album cover"
+                  />
                   <CardContent sx={{ flex: '1 1 auto' }}>
                     <Typography 
                       component="div"
                       variant="h5"
-                      color={darkMode ? "textPrimary" : "textSecondary"}
-                      sx={{overflow: "hidden"}}
+                      color={darkMode ? "text.primary" : "text.secondary"}
                     >
-                      {track.title} 
+                      {nowPlaying.title}
                     </Typography>
                     <Typography 
                       variant="subtitle1"
-                      color={darkMode ? "textPrimary" : "textSecondary"}
+                      color={darkMode ? "text.primary" : "text.secondary"}
                       component="div"
                     >
-                      {track.artist}
+                      {nowPlaying.artist}
                     </Typography>
                     <Typography 
                       variant="subtitle1"
-                      color={darkMode ? "textPrimary" : "textSecondary"}
+                      color={darkMode ? "text.primary" : "text.secondary"}
                       component="div"
                     >
-                      {track.date}
+                      {nowPlaying.date}
                     </Typography>
                   </CardContent>
-                </Card>
-              ))
-            }
+                </Box>
+              </Card>
+              }
+            </Stack>
+            <Stack direction={"column"} spacing={{ xs: 1, sm: 2, md: 1 }} >
+              {
+                recentPlays &&
+                recentPlays.map((track, index) => (
+                  <Card 
+                    key={index}
+                    sx={{
+                      display: 'flex',
+                      maxHeight: "21vh",
+                      boxShadow: "rgb(0 0 0 / 17%) 1px 1px 6px 0px",
+                      border: "1px solid #0000002e",
+                      borderRadius: "14px", 
+                      maxWidth: {
+                        xs: "auto",
+                        sm: "340px",
+                        md: "420px"
+                      },
+                    }} 
+                  >
+                    <CardContent sx={{ flex: '1 1 auto' }}>
+                      <Typography 
+                        component="div"
+                        variant="h5"
+                        color={darkMode ? "textPrimary" : "textSecondary"}
+                        sx={{overflow: "hidden"}}
+                      >
+                        {track.title} 
+                      </Typography>
+                      <Typography 
+                        variant="subtitle1"
+                        color={darkMode ? "textPrimary" : "textSecondary"}
+                        component="div"
+                      >
+                        {track.artist}
+                      </Typography>
+                      <Typography 
+                        variant="subtitle1"
+                        color={darkMode ? "textPrimary" : "textSecondary"}
+                        component="div"
+                      >
+                        {track.date}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                ))
+              }
+            </Stack>
+          </StyledResponsiveGrid>
+          <Stack direction={"row"} justifyContent={"flex-end"}>
+            <CustomType 
+              variant="subtitle1"
+            >
+              Powered by LastFm
+            </CustomType>
           </Stack>
-        </StyledResponsiveGrid>
-        <Stack direction={"row"} justifyContent={"flex-end"}>
-          <CustomType 
-            variant="subtitle1"
-          >
-            Powered by LastFm
-          </CustomType>
         </Stack>
-      </Stack>
-    </StyledProfileCardDiv>
-    </animated.div>
+      </StyledProfileCardDiv>
+    </motion.div>
   );
 };
 

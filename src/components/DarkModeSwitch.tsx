@@ -6,6 +6,8 @@ import { IconButton } from '@mui/material';
 import {useDarkMode} from "../App";
 // icons
 import { EmojiObjectsOutlined } from '@mui/icons-material';
+// animation
+import { motion } from "framer-motion";
 
 const StyledDiv = styled("div")(({theme}) => ({
   position: "relative",
@@ -22,12 +24,21 @@ const DarkModeSwitch = (): JSX.Element => {
 
   return(
     <StyledDiv>
-      <IconButton
-        color={darkMode ? "secondary" : "primary"}
-        onClick={() => setDarkMode(state => !state)}
+      <motion.div
+        whileTap={{
+          translateX: ["3px", "-3px", "2px"],
+          translateY: ["1px", "-2px", "1px"],
+          rotate: ["2deg", "-1deg", "3deg"],
+          scale: [1.2, 1.4, 0.7, 1]
+        }}
       >
-        <EmojiObjectsOutlined fontSize={"large"}/>
-      </IconButton>
+        <IconButton
+          color={darkMode ? "secondary" : "primary"}
+          onClick={() => setDarkMode(state => !state)}
+        >
+          <EmojiObjectsOutlined fontSize={"large"}/>
+        </IconButton>
+      </motion.div>
     </StyledDiv>
   );
 };

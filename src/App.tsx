@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useMemo, useEffect, useState} from 'react';
 import Homepage from "./components/HomePage";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
@@ -35,18 +35,24 @@ const App = ():JSX.Element => {
   // get darkmode preference
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   // state
-  const [darkMode, setDarkMode] = React.useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   // memo
-  const darkModeValue = React.useMemo(() => {
+  const darkModeValue = useMemo(() => {
     return {
       darkMode,
       setDarkMode
     };
   }, [darkMode]);
+  // effect for setting dark mode
+  useEffect(() => {
+    setDarkMode(prefersDarkMode);
+  }, [prefersDarkMode]);
+
   // theme memoised
-  const theme = React.useMemo(
-    () =>
-      createTheme({
+  const responsiveTheme = React.useMemo(
+    () => {
+      // create theme
+      const _theme = createTheme({
         palette: {
           type: darkMode ? "dark" : "light",
           mode: darkMode ? "dark" : "light",
@@ -80,22 +86,18 @@ const App = ():JSX.Element => {
             xl: 1536,
           },
         },
-      }),
+      });
+
+      // return responsive theme
+      return responsiveFontSizes(_theme, {factor:3});
+    },
     [darkMode],
   );
 
-  // responsive theme
-  const responsiveTheme = responsiveFontSizes(theme, {factor:3});
-
-  // effect for setting dark mode
-  React.useEffect(() => {
-    setDarkMode(prefersDarkMode);
-  }, [prefersDarkMode]);
   // basic effect for testing stuff
   // React.useEffect(() => {
   //   console.log(theme);
   // });
-
 
   return(
     <>

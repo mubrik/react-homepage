@@ -1,16 +1,18 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 // material
-import { styled } from '@mui/system';
+import { styled, useTheme } from '@mui/system';
 import { Accordion, AccordionDetails, AccordionSummary  } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 // icons
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-// anim spring
-import { animated, useTransition } from 'react-spring';
+// animation
+import { motion } from "framer-motion";
+// custom comps
 import ProjectCard from "./ProjectCard";
 import { CustomBaseButton, CustomType} from './CustomComponents';
+import useBackgroundGradientColor from "./utils/useBackgroundGradientColor";
 //types
 import {IHomePageState} from "./HomePage";
 
@@ -19,8 +21,9 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
   flexDirection: "column",
   height: "auto",
   padding: theme.spacing(2),
-  border: theme.palette.type === "dark" ? `1px solid ${theme.palette.secondary.light}52` : "1px solid #3b47dd40",
-  boxShadow: theme.palette.type === "dark"? "none" : `rgb(0 0 0 / 15%) 1px 1px 9px 1px`,
+  // border: theme.palette.type === "dark" ? `1px solid ${theme.palette.secondary.light}52` : "1px solid #3b47dd40",
+  // boxShadow: theme.palette.type === "dark"? "none" : `rgb(0 0 0 / 15%) 1px 1px 9px 1px`,
+  backdropFilter: "blur(2px)",
   borderRadius: "0.9em",
   minWidth:"100%", // mobile
   [theme.breakpoints.up("xs")]: {
@@ -58,29 +61,16 @@ interface IJsonObj {
 
 const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
 
-    // states
-    // handle accordions
-    const [expanded, setExpanded] = React.useState<boolean|string>(false);
+    // states handle accordions
+    const [expanded, setExpanded] = useState<boolean|string>(false);
     // project data
-    const [projData, setProjData] = React.useState<IJsonObj[]|null>(null);
-    // anim transitions props
-    const transitions = useTransition(show, {
-      from: {
-        display: "none",
-        transform: "translateX(80%)",
-      },
-      enter: {
-        delay: 500,
-        display: "flex",
-        transform: "translateX(0%)",
-      },
-      leave: {
-        transform: "translateX(-250%)",
-      },
-      expires: 2
-    });
+    const [projData, setProjData] = useState<IJsonObj[]|null>(null);
+    
+    // animation colors for motion div
+    const animateColors = useBackgroundGradientColor();
+
     // fetch project details
-    React.useEffect(() => {
+    useEffect(() => {
       fetch('/react-homepage/projectDetails.json')
         .then(res => res.json())
         .then(result => {
@@ -88,6 +78,7 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
           setProjData(details as IJsonObj[]);
         });
     }, []);
+
     // handle button clicks
     const handleClick = (param:IHomePageState ): void => {
       setNav(param);
@@ -97,65 +88,129 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
       setExpanded(isExpanded ? panel : false);
     };
 
-    return transitions(
-      (styles, show) => show && 
-        <animated.div style={styles}>
-          <StyledProfileCardDiv>
-            <StyledNavAreaDiv>
-              <CustomBaseButton
-                size={"small"}
-                onClick={() => handleClick("home")}
-                sx={{
-                  marginLeft: (theme) =>  theme.spacing(1),
-                }}
-                startIcon={<HomeIcon/>}
-              >
-                Home
-              </CustomBaseButton>
-              <CustomBaseButton
-                size={"small"}
-                onClick={() => handleClick("nowPlaying")}
-                sx={{
-                  marginRight: (theme) =>  theme.spacing(1),
-                }}
-                startIcon={<MusicNoteIcon/>}
-              >
-                Playlist
-              </CustomBaseButton>
-            </StyledNavAreaDiv>
-            { projData ? 
-                projData.map((item, index) => (
-                  <Accordion
-                    key={`panel${index}`}
-                    sx={{margin:(theme) => theme.spacing(1)}}
-                    expanded={expanded === `panel${index}`} 
-                    onChange={(_, isExpanded) => handleChange(`panel${index}`, isExpanded)}
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1a-content"
-                      id="panel1a-header"
-                    >
-                      <Avatar aria-label="title"  
-                        variant="rounded"
-                        sx={{
-                        height: "auto",
-                        marginRight:(theme) => theme.spacing(1)}}
-                      >
-                        {item.header.slice(0, 1)}
-                      </Avatar>
-                      <CustomType>{item.header}</CustomType>
-                      <CustomType sx={{marginLeft: "auto", marginRight: "auto"}}>{item.description}</CustomType>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <ProjectCard {...item}/>
-                    </AccordionDetails>
-                  </Accordion>
-                )) :
-                null
+    return(
+      <motion.div
+        // animate in div
+        initial={{
+          position: "absolute",
+          display: 'flex',
+          top: "1%",
+          left: "1%",
+          scale: 0.3,
+        }}
+        animate={{
+          top: "50%",
+          left: "50%",
+          scale: 1,
+          translateX: "-50%",
+          translateY: "-50%",
+          transition: {
+            duration: 1,
+            type: "tween"
+          },
+          transitionEnd: {
+            position: "relative",
+            translateX: "0%",
+            translateY: "0%",
+            top: 0,
+            left: 0
+          }
+        }}
+        exit={{
+          translateX: "50%",
+          translateY: "80%",
+          scale: 0.2,
+          transition: {
+            duration: 0.3
+          },
+        }}
+      >
+        <motion.div
+          // animate in background
+          initial={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+            boxShadow: "#0000002b 1px 1px 3px 1px",
+          }}
+          animate={{
+            background: animateColors.bgColor,
+            borderRadius: "0.9em",
+            width: "94%",
+            height: "82%",
+            right: 15,
+            top: 64,
+            zIndex: -777,
+            transition: {
+              delay: 0.2,
+              duration: 0.6,
+              type: "tween"
             }
-          </StyledProfileCardDiv>
-        </animated.div>
+          }}
+          exit={{
+            background: "transparent",
+            transition: {
+              duration: 0.3
+            }
+          }}
+        >
+        </motion.div>
+        <StyledProfileCardDiv>
+          <StyledNavAreaDiv>
+            <CustomBaseButton
+              size={"small"}
+              onClick={() => handleClick("home")}
+              sx={{
+                marginLeft: (theme) =>  theme.spacing(1),
+              }}
+              startIcon={<HomeIcon/>}
+            >
+              Home
+            </CustomBaseButton>
+            <CustomBaseButton
+              size={"small"}
+              onClick={() => handleClick("nowPlaying")}
+              sx={{
+                marginRight: (theme) =>  theme.spacing(1),
+              }}
+              startIcon={<MusicNoteIcon/>}
+            >
+              Playlist
+            </CustomBaseButton>
+          </StyledNavAreaDiv>
+          { projData ? 
+              projData.map((item, index) => (
+                <Accordion
+                  key={`panel${index}`}
+                  sx={{margin:(theme) => theme.spacing(1)}}
+                  expanded={expanded === `panel${index}`} 
+                  onChange={(_, isExpanded) => handleChange(`panel${index}`, isExpanded)}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Avatar aria-label="title"  
+                      variant="rounded"
+                      sx={{
+                      height: "auto",
+                      marginRight:(theme) => theme.spacing(1)}}
+                    >
+                      {item.header.slice(0, 1)}
+                    </Avatar>
+                    <CustomType>{item.header}</CustomType>
+                    <CustomType sx={{marginLeft: "auto", marginRight: "auto"}}>{item.description}</CustomType>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <ProjectCard {...item}/>
+                  </AccordionDetails>
+                </Accordion>
+              )) :
+              null
+          }
+        </StyledProfileCardDiv>
+      </motion.div>
     );
 };
 
