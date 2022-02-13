@@ -140,12 +140,6 @@ const NowPlaying = ({setNav, pageState, show}: INowPlayingProps): JSX.Element =>
               type: "spring"
             }
           }}
-          exit={{
-            background: "transparent",
-            transition: {
-              duration: 0.3
-            }
-          }}
         >
       </motion.div>
       <StyledProfileCardDiv>

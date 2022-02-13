@@ -158,12 +158,6 @@ const ProfileView = ({setNav, show}: IProfileViewProps): JSX.Element => {
               type: "spring"
             }
           }}
-          exit={{
-            background: "transparent",
-            transition: {
-              duration: 0.3
-            }
-          }}
         >
         </motion.div>
         <StyledProfileCardDiv>
