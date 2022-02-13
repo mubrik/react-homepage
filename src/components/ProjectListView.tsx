@@ -23,6 +23,8 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
   padding: theme.spacing(2),
   // border: theme.palette.type === "dark" ? `1px solid ${theme.palette.secondary.light}52` : "1px solid #3b47dd40",
   // boxShadow: theme.palette.type === "dark"? "none" : `rgb(0 0 0 / 15%) 1px 1px 9px 1px`,
+  overflow: "auto",
+  maxHeight: "84vh",
   backdropFilter: "blur(2px)",
   borderRadius: "0.9em",
   minWidth:"100%", // mobile
@@ -30,7 +32,8 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
     minWidth:"50vw"
   },
   [theme.breakpoints.up("sm")]: {
-    minWidth:"55vw"
+    minWidth:"55vw",
+    maxHeight: "86vh",
   },
   [theme.breakpoints.up("xl")]: {
     minWidth:"58vw"
@@ -93,28 +96,18 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
         // animate in div
         initial={{
           position: "absolute",
-          display: 'flex',
-          top: "1%",
-          left: "1%",
+          translateX: "-50%",
+          translateY: "-50%",
           scale: 0.3,
         }}
         animate={{
-          top: "50%",
-          left: "50%",
           scale: 1,
-          translateX: "-50%",
-          translateY: "-50%",
+          translateX: "0%",
+          translateY: "0%",
           transition: {
             duration: 1,
-            type: "tween"
+            type: "spring"
           },
-          transitionEnd: {
-            position: "relative",
-            translateX: "0%",
-            translateY: "0%",
-            top: 0,
-            left: 0
-          }
         }}
         exit={{
           translateX: "50%",
@@ -143,8 +136,8 @@ const ProjectListView = ({setNav, show}: IProjectListView): JSX.Element => {
             zIndex: -777,
             transition: {
               delay: 0.2,
-              duration: 0.6,
-              type: "tween"
+              duration: 0.8,
+              type: "spring"
             }
           }}
           exit={{

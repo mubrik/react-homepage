@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useEffect} from 'react';
 // styles
 import { styled, useTheme } from '@mui/system';
 
@@ -8,6 +8,8 @@ import DarkModeSwitch from './DarkModeSwitch';
 import ProjectListView from './ProjectListView';
 import ProfileView from './ProfileView';
 import NowPlaying from './NowPlaying';
+import NowPlayingContext from "./NowPlayingContext";
+import { CustomType } from './CustomComponents';
 // animation
 import { AnimatePresence, motion } from "framer-motion";
 // dkmode
@@ -67,6 +69,10 @@ const Homepage = (): JSX.Element => {
 
   return(
     <motion.div
+      initial={{
+        height: "100%",
+        overflow: "hidden"
+      }}
       animate={{
         background: animateColors.test,
         position: "relative",
@@ -81,6 +87,7 @@ const Homepage = (): JSX.Element => {
       <DarkModeSwitch/>
     </StyledNavAreaDiv>
     <StyledRootDiv>
+    <NowPlayingContext>
       <AnimatePresence>
         {
           pageState === "home" &&
@@ -100,15 +107,31 @@ const Homepage = (): JSX.Element => {
         }
         {
           pageState === "nowPlaying" &&
-          <NowPlaying 
-            setNav={setPageState}
-            pageState={pageState}
-            show={!!(pageState === "nowPlaying")}
-            key={"nowPlaying"}
-          />
+          <>
+            <NowPlaying 
+              setNav={setPageState}
+              pageState={pageState}
+              show={!!(pageState === "nowPlaying")}
+              key={"nowPlaying"}
+            />
+          </>
         }
       </AnimatePresence>
+    </NowPlayingContext>
     </StyledRootDiv>
+    {
+      pageState === "nowPlaying" &&
+      <CustomType 
+        variant="subtitle1"
+        style={{
+          position: "fixed",
+          bottom: 1,
+          right: 5
+        }}
+      >
+        Powered by LastFm
+      </CustomType>
+    }
     </motion.div>
   );
 };

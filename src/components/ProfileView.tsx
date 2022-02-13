@@ -13,6 +13,9 @@ import useBackgroundGradientColor from "./utils/useBackgroundGradientColor";
 import { useDarkMode } from '../App';
 //types
 import {IHomePageState} from "./HomePage";
+// icons
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import ListIcon from '@mui/icons-material/List';
 
 const StyledAboutDiv = styled("div")(({theme}) => ({
   margin: theme.spacing(0.5),
@@ -68,6 +71,14 @@ const StyledProfileCardDiv = styled("div")(({theme}) => ({
   },
 }));
 
+const StyledNavAreaDiv = styled("div")(({theme}) => ({
+  display: "flex",
+  width: "100%",
+  justifyContent: "space-between",
+  alignItems: "center",
+  padding: theme.spacing(1)
+}));
+
 interface IProfileViewProps {
   setNav: React.Dispatch<React.SetStateAction<IHomePageState>>;
   show: boolean;
@@ -103,27 +114,18 @@ const ProfileView = ({setNav, show}: IProfileViewProps): JSX.Element => {
         // animate in div
         initial={{
           position: "absolute",
-          top: "0%",
-          left: "0%",
+          translateX: "-50%",
+          translateY: "-50%",
           scale: 0.3,
         }}
         animate={{
-          top: "50%",
-          left: "50%",
           scale: 1,
-          translateX: "-50%",
-          translateY: "-50%",
+          translateX: "0%",
+          translateY: "0%",
           transition: {
-            duration: 0.6
+            duration: 1,
+            type: "spring"
           },
-          transitionEnd: {
-            display: 'flex',
-            position: "relative",
-            top: 0,
-            left: 0,
-            translateX: "0%",
-            translateY: "0%"
-          }
         }}
         exit={{
           translateX: "70%",
@@ -145,15 +147,15 @@ const ProfileView = ({setNav, show}: IProfileViewProps): JSX.Element => {
           animate={{
             background: animateColors.bgColor,
             borderRadius: "0.9em",
-            width: "94%",
-            height: "94%",
-            right: 5,
-            top: 10,
+            width: "95%",
+            height: "87%",
+            right: 18,
+            top: 66,
             zIndex: -777,
             transition: {
               delay: 0.2,
-              duration: 0.6,
-              type: "tween"
+              duration: 0.8,
+              type: "spring"
             }
           }}
           exit={{
@@ -165,6 +167,28 @@ const ProfileView = ({setNav, show}: IProfileViewProps): JSX.Element => {
         >
         </motion.div>
         <StyledProfileCardDiv>
+          <StyledNavAreaDiv>
+            <CustomBaseButton
+              size={"small"}
+              onClick={() => handleClick("projects")}
+              sx={{
+                marginLeft: (theme) =>  theme.spacing(1),
+              }}
+              startIcon={<ListIcon/>}
+            >
+              Projects
+            </CustomBaseButton>
+            <CustomBaseButton
+              size={"small"}
+              onClick={() => handleClick("nowPlaying")}
+              sx={{
+                marginRight: (theme) =>  theme.spacing(1),
+              }}
+              startIcon={<MusicNoteIcon/>}
+            >
+              Playlist
+            </CustomBaseButton>
+          </StyledNavAreaDiv>
           <StyledProfileAviDiv>
             <Avatar 
               src={darkMode ? "/react-homepage/avi2.png" : "/react-homepage/avi.png"} 

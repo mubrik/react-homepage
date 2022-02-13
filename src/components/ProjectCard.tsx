@@ -34,10 +34,9 @@ const StyledCardButtonAreaDiv = styled("div")(({theme}) => ({
 const StyledImg = styled("img")(({theme}) => ({
   maxHeight: 320,
   minWidth: 120,
-  maxWidth: 200,
+  maxWidth: "90%",
   [theme.breakpoints.up("xs")]: {
     maxHeight: 320,
-    maxWidth: 400,
     minWidth: 200,
   },
   [theme.breakpoints.up("md")]: {
@@ -77,7 +76,6 @@ const ProjectCard = ({imageUri, content, siteLink, codeLink}: IJsonObj): JSX.Ele
               <Skeleton width={60} height={30} animation="wave"/>
             )
         }
-          
         <StyledCardTextAreaDiv>
           <div>
             <CustomType variant="body2">
