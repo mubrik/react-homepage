@@ -301,6 +301,12 @@ const NowPlaying = ({setNav, pageState, show}: INowPlayingProps): JSX.Element =>
                   </Card>
                 ))
               }
+              {
+                (dataState === "error") && 
+                <>
+                  <p> Error getting my tracks, try again or send a message :)</p>
+                </>
+              }
             </Stack>
           </StyledResponsiveGrid>
         </Stack>
